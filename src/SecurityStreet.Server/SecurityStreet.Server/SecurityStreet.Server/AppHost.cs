@@ -22,7 +22,11 @@ namespace SecurityStreet.Server
         /// </summary>
         public override void Configure(Container container)
         {
-            container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=VAIO-W10;Initial Catalog=Training;Integrated Security=True", SqlServerDialect.Provider));
+
+            // TODO: Pick configuration from envirnoment
+            //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=VAIO-W10;Initial Catalog=Training;Integrated Security=True", SqlServerDialect.Provider));
+            container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Server=tcp:unive-development.database.windows.net,1433;Initial Catalog=unive-development-swe-2018;Persist Security Info=False;User ID=devTeamUnive;Password=Development13@unive!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", SqlServerDialect.Provider));
+            //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
 
             SetConfig(new HostConfig
             {
@@ -30,6 +34,20 @@ namespace SecurityStreet.Server
             });
 
             Plugins.Add(new AutoQueryFeature { MaxLimit = 1000 });
+
+            InitTables(container);
+        }
+
+        /// <summary>
+        /// Initializes the tables.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        private void InitTables(Container container)
+        {
+            using (var db = container.Resolve<IDbConnectionFactory>().Open())
+            {
+                db.CreateTableIfNotExists<Autovelox>();
+            }
         }
     }
 }
