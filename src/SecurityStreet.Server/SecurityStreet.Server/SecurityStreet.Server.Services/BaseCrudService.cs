@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace SecurityStreet.Server.Services
 {
-    public class BaseService<TEntity, TDto, TReadRequest, TUpdateRequest, TDeleteRequest> : Service
+    public class BaseCrudService<TEntity, TDto, TReadRequest, TUpdateRequest, TDeleteRequest> : Service
         where TEntity : BaseEntityWithAutoIncrement
         where TDto : BaseEntity
         where TReadRequest : ReadRequest
@@ -29,9 +29,9 @@ namespace SecurityStreet.Server.Services
         public IAutoQueryDb AutoQuery { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseService{Entity, Dto, ReadRequest, UpdateRequest, DeleteRequest}"/> class.
+        /// Initializes a new instance of the <see cref="BaseCrudService{Entity, Dto, ReadRequest, UpdateRequest, DeleteRequest}"/> class.
         /// </summary>
-        public BaseService()
+        public BaseCrudService()
         {
             dbConnectionFactory = HostContext.Resolve<IDbConnectionFactory>();
         }
@@ -106,7 +106,7 @@ namespace SecurityStreet.Server.Services
                 using (var db = dbConnectionFactory.Open())
                 {
                     if (requestEntity.Id > 0)
-                        db.Update(requestEntity, a => a.Id == requestEntity.Id);
+                        db.Save(requestEntity);
                     else
                         requestEntity.Id = (int)db.Insert(requestEntity, selectIdentity: true);
 

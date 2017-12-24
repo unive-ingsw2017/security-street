@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autovelox\AutoveloxService.cs" />
-    <Compile Include="BaseService.cs" />
+    <Compile Include="BaseCrudService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Autovelox\Models\DeleteAutoveloxRequest.cs" />
     <Compile Include="Autovelox\Models\QueryAutoveloxRequest.cs" />

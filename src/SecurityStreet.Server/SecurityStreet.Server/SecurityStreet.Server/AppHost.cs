@@ -4,6 +4,7 @@ using SecurityStreet.Server.Services.Autovelox;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using SecurityStreet.Server.Models.Entities;
+using ServiceStack.Text;
 
 namespace SecurityStreet.Server
 {
@@ -30,8 +31,13 @@ namespace SecurityStreet.Server
 
             SetConfig(new HostConfig
             {
+                DebugMode = true,
                 HandlerFactoryPath = "api"
             });
+
+            // Configure Servistack.Text for serialization
+            JsConfig.EmitCamelCaseNames = true;
+            JsConfig.IncludeNullValues = true;
 
             Plugins.Add(new AutoQueryFeature { MaxLimit = 1000 });
 
