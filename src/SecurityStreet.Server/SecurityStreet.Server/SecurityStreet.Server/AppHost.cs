@@ -53,6 +53,7 @@ namespace SecurityStreet.Server
             using (var db = container.Resolve<IDbConnectionFactory>().Open())
             {
                 db.CreateTableIfNotExists<Autovelox>();
+                db.CreateTableIfNotExists<Crash>();
             }
         }
     }
