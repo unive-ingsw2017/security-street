@@ -14,8 +14,7 @@ namespace SecurityStreet.Server
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
-        public AppHost()
-            : base("SecurityStreet.Server", typeof(AutoveloxService).Assembly) { }
+        public AppHost() : base("SecurityStreet.Server", typeof(AutoveloxService).Assembly) { }
 
         /// <summary>
         /// Application specific configuration
@@ -23,12 +22,10 @@ namespace SecurityStreet.Server
         /// </summary>
         public override void Configure(Container container)
         {
+            // Pick connection string from web.config appsettings
+            container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(AppSettings.Get<string>("connectionstring"), SqlServerDialect.Provider));
 
-            // TODO: Pick configuration from envirnoment
-            //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=VAIO-W10;Initial Catalog=Training;Integrated Security=True", SqlServerDialect.Provider));
-            container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Server=tcp:unive-development.database.windows.net,1433;Initial Catalog=unive-development-swe-2018;Persist Security Info=False;User ID=devTeamUnive;Password=Development13@unive!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", SqlServerDialect.Provider));
-            //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
-
+            // Set host config
             SetConfig(new HostConfig
             {
                 DebugMode = true,
@@ -39,8 +36,10 @@ namespace SecurityStreet.Server
             JsConfig.EmitCamelCaseNames = true;
             JsConfig.IncludeNullValues = true;
 
+            /// Add autoquery
             Plugins.Add(new AutoQueryFeature { MaxLimit = 1000 });
 
+            // Check table initialization
             InitTables(container);
         }
 
