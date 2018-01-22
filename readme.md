@@ -14,3 +14,7 @@ tempo reale tali dati.
 La nostra applicazione ha la funzione di rappresentare e fornire i dati riguardo all’impiego degli
 autovelox come mezzo di prevenzione, analizzando il numero di incidenti prima e dopo
 l’installazione. 
+
+### Back end
+
+Il back end dell'applicazione, realizzato con la licenza gratuita di [ServiceStack](https://servicestack.net) e pubbliato su [Microsoft Azure](https://azure.microsoft.com), è reperibile all'indirizzo [http://unive-development-swe-2018.azurewebsites.net](http://unive-development-swe-2018.azurewebsites.net).
