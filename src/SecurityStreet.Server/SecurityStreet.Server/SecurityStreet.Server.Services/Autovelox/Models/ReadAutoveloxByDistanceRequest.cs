@@ -19,7 +19,7 @@ namespace SecurityStreet.Server.Services.Autovelox
         /// <value>
         /// The latitude.
         /// </value>
-        public float Latitude { get; set; }
+        public double Latitude { get; set; }
 
         /// <summary>
         /// Gets or sets the longitude.
@@ -27,7 +27,7 @@ namespace SecurityStreet.Server.Services.Autovelox
         /// <value>
         /// The longitude.
         /// </value>
-        public float Longitude { get; set; }
+        public double Longitude { get; set; }
 
         /// <summary>
         /// Gets or sets the distance in KM.
