@@ -11,7 +11,7 @@ namespace SecurityStreet.Server.Models.Dto
         /// <value>
         /// The latitude.
         /// </value>
-        public float? Latitude { get; set; }
+        public double Latitude { get; set; }
 
         /// <summary>
         /// Gets or sets the longitude.
@@ -19,7 +19,7 @@ namespace SecurityStreet.Server.Models.Dto
         /// <value>
         /// The longitude.
         /// </value>
-        public float? Longitude { get; set; }
+        public double Longitude { get; set; }
 
         /// <summary>
         /// Gets or sets the date.
