@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/crashes_map_menuitem"
+            android:icon="@drawable/ic_directions_car_black_24dp"
+            android:title="@string/navigation_drawer_crashes_map" />
+        <item
+            android:id="@+id/autovelox_map_menuitem"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/navigation_drawer_autovelox_map" />
+        <item
+            android:id="@+id/send_menuitem"
+            android:icon="@drawable/ic_warning_black_24dp"
+            android:title="@string/navigation_drawer_send" />
+        <item
+            android:id="@+id/notity_menuitem"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/navigation_drawer_notify" />
+    </group>
+
+</menu>

@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void buttonEnterClicked(View button) {
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }

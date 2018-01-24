@@ -2,5 +2,20 @@
     <string name="app_name">SecurityStreet</string>
     <string name="intro_title">Benvenuto in SecurityStreet!</string>
     <string name="intro_button">Entra</string>
-    <string name="intro_descirption">L\'app che ti permette di verificare di persiona la posizione autovelox nella tua zona e il numero di incidenti</string>
+    <string name="intro_descirption">L\'app che ti \n permette di verificare di persiona \n la posizione autovelox nella tua zona e il numero di incidenti</string>
+    <string name="title_activity_maps">Visualizza mappe</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="navigation_drawer_crashes_map">Mappa incidenti</string>
+    <string name="navigation_drawer_autovelox_map">Mappa autovelox</string>
+    <string name="navigation_drawer_send">Segnala</string>
+    <string name="navigation_drawer_notify">Notifiche</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
