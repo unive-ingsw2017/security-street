@@ -28,4 +28,5 @@ dependencies {
     compile 'net.servicestack:android:1.0.32'
     compile 'com.google.android.gms:play-services-location:10.+'
 
+    implementation 'com.android.support:cardview-v7:26.1.0'
 }
