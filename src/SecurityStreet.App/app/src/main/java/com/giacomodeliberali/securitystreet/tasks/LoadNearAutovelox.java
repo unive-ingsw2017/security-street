@@ -61,7 +61,7 @@ public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.Autovelox
         if (activity == null)
             return;
 
-        TextView textView = activity.findViewById(R.id.label);
-        textView.setText("Found " + result.size() + " autovelox near 100KM around you");
+        //TextView textView = activity.findViewById(R.id.label);
+        //textView.setText("Found " + result.size() + " autovelox near 100KM around you");
     }
 }
