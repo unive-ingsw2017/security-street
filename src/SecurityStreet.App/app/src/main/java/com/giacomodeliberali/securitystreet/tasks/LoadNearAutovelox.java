@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.os.AsyncTask;
 
+import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
 
 import net.servicestack.client.JsonServiceClient;
@@ -17,12 +18,21 @@ import java.util.List;
 
 public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.AutoveloxDto>> {
 
-    private WeakReference<Activity> activityReference;
     private Location location;
+    private int radius = 10;
 
-    public LoadNearAutovelox(Activity context, Location location) {
-        this.activityReference = new WeakReference<>(context);
+    public LoadNearAutovelox(Location location) {
         this.location = location;
+    }
+
+    public LoadNearAutovelox(Location location, int radius) {
+        this.location = location;
+
+
+        if (radius <= 0)
+            radius = Defaults.DEFAULT_RADIUS;
+
+        this.radius = radius;
     }
 
     @Override
@@ -33,14 +43,14 @@ public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.Autovelox
             dtos.ReadAutoveloxByDistanceRequest request = new dtos.ReadAutoveloxByDistanceRequest();
 
             // TODO: Retrive location
-            if(location != null) {
+            if (location != null) {
                 request.setLatitude(location.getLatitude());
                 request.setLongitude(location.getLongitude());
-            }else{
+            } else {
                 request.setLatitude(45.521134);
                 request.setLongitude(12.015341);
             }
-            request.setDistance(10);
+            request.setDistance(radius);
 
             List<dtos.AutoveloxDto> list = client.get(request);
 

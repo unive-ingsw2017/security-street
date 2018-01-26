@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public final class Defaults {
+    public static final int DEFAULT_RADIUS = 10;
     public static int DEFAULT_ZOOM = 12;
     public static final LatLng DEFAULT_LOCATION = new LatLng(45.521134, 12.015341);
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;

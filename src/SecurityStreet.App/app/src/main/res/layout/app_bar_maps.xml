@@ -24,8 +24,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:indeterminate="true"
-                android:backgroundTint="@color/colorWhite"
-                android:visibility="gone" />
+                android:indeterminateTint="@color/colorWhite"
+                android:visibility="visible" />
 
         </android.support.v7.widget.Toolbar>
 
