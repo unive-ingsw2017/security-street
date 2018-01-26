@@ -1,5 +1,6 @@
 package com.giacomodeliberali.securitystreet.tasks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -40,10 +41,10 @@ import java.util.List;
 
 public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.AutoveloxDto>> {
 
-    private WeakReference<MapsActivity> activityReference;
+    private WeakReference<Activity> activityReference;
     private Location location;
 
-    public LoadNearAutovelox(MapsActivity context, Location location) {
+    public LoadNearAutovelox(Activity context, Location location) {
         this.activityReference = new WeakReference<>(context);
         this.location = location;
     }
@@ -71,63 +72,5 @@ public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.Autovelox
         } catch (Exception e) {
             return null;
         }
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        MapsActivity activity = activityReference.get();
-        ProgressBar progressBar = activity.findViewById(R.id.progress_spinner);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onPostExecute(List<dtos.AutoveloxDto> result) {
-
-        MapsActivity activity = activityReference.get();
-
-        if (activity == null)
-            return;
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-        for (dtos.AutoveloxDto velox : result){
-
-            LatLng coordinates = new LatLng(velox.getLatitude(), velox.getLongitude());
-
-            MarkerOptions marker = new MarkerOptions()
-                    .position(coordinates);
-                    //.icon(bitmapDescriptorFromVector(activity,R.drawable.ic_directions_car_black_24dp));
-
-            activity.mMap.addMarker(marker);
-
-            builder.include(coordinates);
-        }
-
-        LatLngBounds bounds = builder.build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 10);
-
-        activity.mMap.animateCamera(cameraUpdate);
-
-        ProgressBar progressBar = activity.findViewById(R.id.progress_spinner);
-        progressBar.setVisibility(View.GONE);
-
-        Toast.makeText(activity.getApplicationContext(),"Trovati " + result.size() + " autovelox nel raggio di 10KM",Toast.LENGTH_SHORT);
-
-        //TextView textView = activity.findViewById(R.id.label);
-        //textView.setText("Found " + result.size() + " autovelox near 100KM around you");
-    }
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.marker_blank);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
-        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        background.draw(canvas);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
