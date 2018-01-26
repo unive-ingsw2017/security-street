@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -72,6 +73,8 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
      */
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+    private FloatingActionButton floatingButton;
+
 
     public AutoveloxMap() {
     }
@@ -95,7 +98,8 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
 
-        rootView.findViewById(R.id.fragment_autovelox_map_floating_button_here).setOnClickListener(new View.OnClickListener() {
+        floatingButton = rootView.findViewById(R.id.fragment_autovelox_map_floating_button_here);
+        floatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Report the last zoom and position
@@ -176,7 +180,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defaults.DEFAULT_LOCATION, Defaults.DEFAULT_ZOOM));
-                            gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            floatingButton.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -229,10 +233,10 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         try {
             if (mLocationPermissionGranted) {
                 gMap.setMyLocationEnabled(true);
-                gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                floatingButton.setVisibility(View.VISIBLE);
             } else {
                 gMap.setMyLocationEnabled(false);
-                gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                floatingButton.setVisibility(View.GONE);
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
