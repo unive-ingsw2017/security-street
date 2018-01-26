@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -79,6 +80,8 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_autovelox_map, container, false);
 
         // Construct the detection client
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
@@ -87,14 +90,23 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
 
         // Create the map async
-        //SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autovelox_map);
-        //mapFragment.getMapAsync(this);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.autovelox_map);
+        mapFragment.getMapAsync(this);
 
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_autovelox_map, container, false);
+        rootView.findViewById(R.id.fragment_autovelox_map_floating_button_here).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Report the last zoom and position
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(mLastKnownLocation.getLatitude(),
+                                mLastKnownLocation.getLongitude()), Defaults.DEFAULT_ZOOM));
+            }
+        });
+
+        return rootView;
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -122,7 +134,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                         mLastKnownLocation = task.getResult();
                         if (task.isSuccessful() && mLastKnownLocation != null) {
                             // Set the map's camera position to the current location of the device.
-                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), Defaults.DEFAULT_ZOOM));
 
@@ -156,7 +168,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                                 Toast.makeText(self.getApplicationContext(),"Trovati " + results.size() + " autovelox nel raggio di 10KM",Toast.LENGTH_LONG);
 
                             } catch (Exception exception) {
-                                Toast.makeText(self, "Cannot insert autovelox near you", Toast.LENGTH_LONG).show();
+                                Toast.makeText(self, "Cannot find any autovelox near you", Toast.LENGTH_LONG).show();
                                 Log.e(TAG, "Cannot insert autovelox", exception);
                             }
 
