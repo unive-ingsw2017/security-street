@@ -18,12 +18,12 @@ import android.widget.Toast;
 
 import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
+import com.giacomodeliberali.securitystreet.tasks.LoadAutoveloxHeatmapOnMap;
+import com.giacomodeliberali.securitystreet.tasks.LoadAutoveloxOnMap;
 import com.giacomodeliberali.securitystreet.tasks.LoadNearAutovelox;
 import com.giacomodeliberali.securitystreet.tasks.ReadAutovelox;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
@@ -57,11 +58,6 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
      * The Google Map instance
      */
     public GoogleMap gMap;
-
-    /**
-     * The Detection client
-     */
-    private PlaceDetectionClient mPlaceDetectionClient;
 
     /**
      * Indicates if the permission to get current position is granted
@@ -98,8 +94,6 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_autovelox_map, container, false);
 
-        // Construct the detection client
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
 
         // Construct a FusedLocationProviderClient
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
@@ -141,9 +135,9 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                 bottomRight.setLongitude(gMap.getProjection().getVisibleRegion().latLngBounds.southwest.longitude);
 
 
-                int radius = (int)((topLeft.distanceTo(bottomRight)/1000)/2);
+                int radius = (int) ((topLeft.distanceTo(bottomRight) / 1000) / 2);
 
-                loadAutoveloxNearAsync(currentMapCenter, radius, false);
+                new LoadAutoveloxOnMap(getActivity(), gMap, currentMapCenter, radius, false).execute();
             }
         });
 
@@ -152,7 +146,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 clearMarkers();
-                loadHeatMap();
+                loadHeatMapAsync();
             }
         });
 
@@ -169,15 +163,6 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         loadAutoveloxNearMyPositionAsync();
     }
 
-    private void showProgressBar(boolean show) {
-        ProgressBar progressBar = getActivity().findViewById(R.id.progress_spinner);
-
-        if (show)
-            progressBar.setVisibility(View.VISIBLE);
-        else
-            progressBar.setVisibility(View.INVISIBLE);
-    }
-
     private void clearMarkers() {
         gMap.clear();
     }
@@ -189,85 +174,32 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         try {
             final MapsActivity self = (MapsActivity) this.getActivity();
 
-            showProgressBar(true);
-
             if (mLocationPermissionGranted) {
+
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
 
-                locationResult.addOnCompleteListener(self, new OnCompleteListener<Location>() {
+                locationResult.addOnSuccessListener(self, new OnSuccessListener<Location>() {
                     @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        mLastKnownLocation = task.getResult();
-                        if (task.isSuccessful() && mLastKnownLocation != null) {
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            mLastKnownLocation = location;
+
                             // Set the map's camera position to the current location of the device.
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), Defaults.DEFAULT_ZOOM));
 
-                            loadAutoveloxNearAsync(mLastKnownLocation, Defaults.DEFAULT_RADIUS, true);
+                            new LoadAutoveloxOnMap(self, gMap, mLastKnownLocation, Defaults.DEFAULT_RADIUS, true).execute();
 
                         } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defaults.DEFAULT_LOCATION, Defaults.DEFAULT_ZOOM));
-                            floatingButtonHere.setVisibility(View.GONE);
+                            Toast.makeText(self, "Impossibile rilevare la posizione corrente", Toast.LENGTH_SHORT).show();
+                            floatingButtonHere.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
             }
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
-        } finally {
-            showProgressBar(false);
-        }
-    }
-
-    /**
-     * Load the autovelox in the specified center in the specified radius
-     *
-     * @param center The map center location
-     * @param radius The radius of the circle, in KM
-     */
-    private void loadAutoveloxNearAsync(Location center, int radius, boolean panToBounds) {
-        if (radius <= 0)
-            radius = Defaults.DEFAULT_RADIUS;
-
-
-        showProgressBar(true);
-
-        try {
-            List<dtos.AutoveloxDto> results = new LoadNearAutovelox(center, radius).execute().get();
-
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-            for (dtos.AutoveloxDto velox : results) {
-
-                LatLng coordinates = new LatLng(velox.getLatitude(), velox.getLongitude());
-
-                if (coordinates.latitude > 0 && coordinates.longitude > 0) {
-                    // Valid position
-
-                    MarkerOptions marker = new MarkerOptions()
-                            .position(coordinates);
-
-                    gMap.addMarker(marker);
-
-                    builder.include(coordinates);
-                }
-            }
-
-            if (panToBounds) {
-                LatLngBounds bounds = builder.build();
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 10);
-                gMap.animateCamera(cameraUpdate);
-            }
-
-            Toast.makeText(getActivity(), "Trovati " + results.size() + " autovelox", Toast.LENGTH_LONG);
-
-        } catch (Exception exception) {
-            Toast.makeText(getActivity(), "Nessun autovelox trvato", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Cannot insert autovelox", exception);
-        } finally {
-            showProgressBar(false);
         }
     }
 
@@ -326,48 +258,27 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void loadHeatMap() {
-        showProgressBar(true);
+    private void loadHeatMapAsync() {
+
+
+
         if (!isHeatMap) {
             try {
-                LatLng currentMapCenterCoordinates = gMap.getCameraPosition().target;
-                Location currentMapCenter = new Location("dummyprovider");
-                currentMapCenter.setLongitude(currentMapCenterCoordinates.longitude);
-                currentMapCenter.setLatitude(currentMapCenterCoordinates.latitude);
 
-                List<dtos.AutoveloxDto> results = new ReadAutovelox().execute().get();
+                floatingButtonHeatMap.setImageResource(R.drawable.ic_clear);
 
-                Collection<LatLng> data = new ArrayList<>();
-                for (dtos.AutoveloxDto velox : results) {
-                    data.add(new LatLng(velox.getLatitude(), velox.getLongitude()));
-                }
+                new LoadAutoveloxHeatmapOnMap(getActivity(),gMap).execute();
 
-
-                HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder()
-                        .data(data)
-                        .build();
-
-
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                builder.include(new LatLng(37.201953,19.602473));
-                builder.include(new LatLng(46.372259,6.610899));
-                LatLngBounds bounds = builder.build();
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds,0);
-                gMap.animateCamera(cameraUpdate);
-
-                // Add a tile overlay to the map, using the heat map tile provider.
-
-                heatmapOverlay = gMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Impossibile creare la mappa", Toast.LENGTH_LONG).show();
-        }
+            }
         } else {
             if (heatmapOverlay != null)
                 heatmapOverlay.remove();
+
+            floatingButtonHeatMap.setImageResource(R.drawable.ic_graphic);
         }
 
         isHeatMap = !isHeatMap;
-
-        showProgressBar(false);
     }
 }

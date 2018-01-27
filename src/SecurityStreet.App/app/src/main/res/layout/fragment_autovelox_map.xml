@@ -1,15 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.giacomodeliberali.securitystreet.AutoveloxMap">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -28,33 +26,43 @@
             android:orientation="vertical">
 
 
-
             <android.support.design.widget.FloatingActionButton
-                android:src="@drawable/ic_graphic"
-                app:backgroundTint="@color/colorWhite"
                 android:id="@+id/fragment_autovelox_map_floating_button_heatmap"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/ic_graphic"
+                app:backgroundTint="@color/colorWhite" />
 
             <android.support.design.widget.FloatingActionButton
-                android:src="@drawable/ic_refresh"
-                app:backgroundTint="@color/colorWhite"
                 android:id="@+id/fragment_autovelox_map_floating_button_refresh"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/ic_refresh"
+                app:backgroundTint="@color/colorWhite" />
 
             <android.support.design.widget.FloatingActionButton
-                android:src="@drawable/ic_gps_fixed"
-                app:backgroundTint="@color/colorWhite"
                 android:id="@+id/fragment_autovelox_map_floating_button_here"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_gps_fixed"
+                app:backgroundTint="@color/colorWhite" />
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="visible" />
 
 
     </RelativeLayout>

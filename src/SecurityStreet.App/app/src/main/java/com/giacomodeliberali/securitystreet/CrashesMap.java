@@ -4,6 +4,7 @@ package com.giacomodeliberali.securitystreet;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
@@ -39,6 +42,11 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CrashesMap extends Fragment implements OnMapReadyCallback {
+
+    /**
+     * The Logger tag
+     */
+    private static final String TAG = MapsActivity.class.getSimpleName();
 
     /**
      * The Google Map instance
@@ -67,7 +75,6 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
 
     private FloatingActionButton floatingButtonHere;
     private FloatingActionButton floatingButtonRefresh;
-    private FloatingActionButton floatingButtonHeatMap;
 
 
     public CrashesMap() {
@@ -107,6 +114,42 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
         updateLocationUI();
 
         //loadAutoveloxNearMyPositionAsync();
+    }
+
+    /**
+     * Loads autovelox near my current position
+     */
+    private void panToMyMpositionAsync() {
+        try {
+            final MapsActivity self = (MapsActivity) this.getActivity();
+
+            showProgressBar(true);
+
+            if (mLocationPermissionGranted) {
+                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+
+                locationResult.addOnCompleteListener(self, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        mLastKnownLocation = task.getResult();
+                        if (task.isSuccessful() && mLastKnownLocation != null) {
+                            // Set the map's camera position to the current location of the device.
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()), Defaults.DEFAULT_ZOOM));
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defaults.DEFAULT_LOCATION, Defaults.DEFAULT_ZOOM));
+                            floatingButtonHere.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
+        } finally {
+            showProgressBar(false);
+        }
     }
 
     private void showProgressBar(boolean show) {
@@ -175,10 +218,8 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
         }
         try {
             if (mLocationPermissionGranted) {
-                gMap.setMyLocationEnabled(true);
                 //floatingButtonHere.setVisibility(View.VISIBLE);
             } else {
-                gMap.setMyLocationEnabled(false);
                 //loatingButtonHere.setVisibility(View.GONE);
                 mLastKnownLocation = null;
                 getLocationPermission();
