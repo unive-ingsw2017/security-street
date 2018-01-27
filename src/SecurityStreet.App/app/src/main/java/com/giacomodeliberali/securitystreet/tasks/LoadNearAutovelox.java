@@ -1,6 +1,5 @@
 package com.giacomodeliberali.securitystreet.tasks;
 
-import android.app.Activity;
 import android.location.Location;
 import android.os.AsyncTask;
 
@@ -9,7 +8,6 @@ import com.giacomodeliberali.securitystreet.models.dtos;
 
 import net.servicestack.client.JsonServiceClient;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -38,7 +36,7 @@ public class LoadNearAutovelox extends AsyncTask<Void, Void, List<dtos.Autovelox
     @Override
     protected List<dtos.AutoveloxDto> doInBackground(Void... params) {
         try {
-            JsonServiceClient client = new JsonServiceClient("http://unive-development-swe-2018.azurewebsites.net/api");
+            JsonServiceClient client = new JsonServiceClient(Defaults.DEFAULT_SERVICES_URL);
 
             dtos.ReadAutoveloxByDistanceRequest request = new dtos.ReadAutoveloxByDistanceRequest();
 
