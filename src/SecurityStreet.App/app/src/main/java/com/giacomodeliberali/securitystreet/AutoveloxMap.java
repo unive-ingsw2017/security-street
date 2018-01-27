@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.giacomodeliberali.securitystreet.tasks.LoadNearAutovelox;
+import com.giacomodeliberali.securitystreet.tasks.ReadAutovelox;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -130,7 +131,19 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                 Location currentMapCenter = new Location("dummyprovider");
                 currentMapCenter.setLongitude(currentMapCenterCoordinates.longitude);
                 currentMapCenter.setLatitude(currentMapCenterCoordinates.latitude);
-                loadAutoveloxNearAsync(currentMapCenter, Defaults.DEFAULT_RADIUS, false);
+
+                Location topLeft = new Location("RadiusPositionTopLeft");
+                topLeft.setLatitude(gMap.getProjection().getVisibleRegion().latLngBounds.northeast.latitude);
+                topLeft.setLongitude(gMap.getProjection().getVisibleRegion().latLngBounds.northeast.longitude);
+
+                Location bottomRight = new Location("RadiusPositionBottomRight");
+                bottomRight.setLatitude(gMap.getProjection().getVisibleRegion().latLngBounds.southwest.latitude);
+                bottomRight.setLongitude(gMap.getProjection().getVisibleRegion().latLngBounds.southwest.longitude);
+
+
+                int radius = (int)((topLeft.distanceTo(bottomRight)/1000)/2);
+
+                loadAutoveloxNearAsync(currentMapCenter, radius, false);
             }
         });
 
@@ -139,7 +152,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 clearMarkers();
-                getHeatMap();
+                loadHeatMap();
             }
         });
 
@@ -313,7 +326,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void getHeatMap() {
+    private void loadHeatMap() {
         showProgressBar(true);
         if (!isHeatMap) {
             try {
@@ -322,7 +335,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                 currentMapCenter.setLongitude(currentMapCenterCoordinates.longitude);
                 currentMapCenter.setLatitude(currentMapCenterCoordinates.latitude);
 
-                List<dtos.AutoveloxDto> results = new LoadNearAutovelox(currentMapCenter, 1000).execute().get();
+                List<dtos.AutoveloxDto> results = new ReadAutovelox().execute().get();
 
                 Collection<LatLng> data = new ArrayList<>();
                 for (dtos.AutoveloxDto velox : results) {
@@ -333,6 +346,14 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                 HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder()
                         .data(data)
                         .build();
+
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(new LatLng(37.201953,19.602473));
+                builder.include(new LatLng(46.372259,6.610899));
+                LatLngBounds bounds = builder.build();
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds,0);
+                gMap.animateCamera(cameraUpdate);
 
                 // Add a tile overlay to the map, using the heat map tile provider.
 

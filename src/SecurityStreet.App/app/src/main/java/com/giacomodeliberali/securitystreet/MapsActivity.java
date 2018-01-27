@@ -71,9 +71,9 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.crashes_map_menuitem) {
-            // Handle the camera action
+            replaceFragment(new CrashesMap());
         } else if (id == R.id.autovelox_map_menuitem) {
-
+            replaceFragment(new AutoveloxMap());
         } else if (id == R.id.send_menuitem) {
 
         } else if (id == R.id.notity_menuitem) {
