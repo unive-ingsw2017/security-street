@@ -133,6 +133,7 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
+        public Integer deaths = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
@@ -149,6 +150,8 @@ public class dtos
         public CrashDto setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public CrashDto setCrashes(Integer value) { this.crashes = value; return this; }
+        public Integer getDeaths() { return deaths; }
+        public CrashDto setDeaths(Integer value) { this.deaths = value; return this; }
         public Integer getInjuried() { return injuried; }
         public CrashDto setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
