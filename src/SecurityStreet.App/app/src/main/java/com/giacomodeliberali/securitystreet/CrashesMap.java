@@ -107,6 +107,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
+        gMap.getUiSettings().setMapToolbarEnabled(false);
 
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
