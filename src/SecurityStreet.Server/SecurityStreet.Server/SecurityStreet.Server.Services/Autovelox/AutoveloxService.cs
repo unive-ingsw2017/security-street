@@ -1,4 +1,5 @@
 ﻿using SecurityStreet.Server.Models.Dto;
+using SecurityStreet.Server.Services.Autovelox.Models;
 using ServiceStack;
 using ServiceStack.OrmLite;
 using System;
@@ -44,6 +45,46 @@ namespace SecurityStreet.Server.Services.Autovelox
                     q.Each(a => results.Add(a.ConvertTo<AutoveloxDto>()));
 
                     return results;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Posts the specified request.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">
+        /// Request cannot be null
+        /// or
+        /// Item cannot be null
+        /// </exception>
+        public AutoveloxDto Post(UpdateAutoveloxRequest request)
+        {
+            if (request == null)
+                throw new ArgumentException("Request cannot be null");
+
+            if (request.Item == null)
+                throw new ArgumentException("Item cannot be null");
+
+            using (var db = dbConnectionFactory.Open())
+            {
+                try
+                {
+                    var item = request.Item.ConvertTo<Server.Models.Entities.Autovelox>();
+
+                    if (item != null)
+                        db.Save(item);
+
+                    if (item.Id > 0)
+                        return item.ConvertTo<AutoveloxDto>();
+
+                    return null;
+
                 }
                 catch (Exception e)
                 {

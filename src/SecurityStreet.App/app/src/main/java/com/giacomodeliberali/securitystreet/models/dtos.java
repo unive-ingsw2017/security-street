@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-28 15:40:06
+Date: 2018-01-28 18:31:27
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://unive-development-swe-2018.azurewebsites.net
@@ -62,6 +62,26 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
+    @Route(Path = "/autovelox", Verbs = "POST")
+    public static class UpdateAutoveloxRequest implements IReturn<AutoveloxDto> {
+        public AutoveloxDto item = null;
+
+        public AutoveloxDto getItem() {
+            return item;
+        }
+
+        public UpdateAutoveloxRequest setItem(AutoveloxDto value) {
+            this.item = value;
+            return this;
+        }
+
+        private static Object responseType = AutoveloxDto.class;
+
+        public Object getResponseType() {
+            return responseType;
+        }
+    }
+
     @Route(Path="/autovelox/{Id}", Verbs="GET")
     // @Route(Path="/autovelox", Verbs="GET")
     public static class ReadAutoveloxRequest extends ReadRequest implements IReturn<ArrayList<AutoveloxDto>>
@@ -87,6 +107,69 @@ public class dtos
         
         private static Object responseType = new TypeToken<QueryResponse<Autovelox>>(){}.getType();
         public Object getResponseType() { return responseType; }
+    }
+
+    public static class AutoveloxDto extends BaseEntity {
+        public Double latitude = null;
+        public Double longitude = null;
+        public Date date = null;
+        public String city = null;
+        public String state = null;
+        public String region = null;
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public AutoveloxDto setLatitude(Double value) {
+            this.latitude = value;
+            return this;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public AutoveloxDto setLongitude(Double value) {
+            this.longitude = value;
+            return this;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public AutoveloxDto setDate(Date value) {
+            this.date = value;
+            return this;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public AutoveloxDto setCity(String value) {
+            this.city = value;
+            return this;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public AutoveloxDto setState(String value) {
+            this.state = value;
+            return this;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public AutoveloxDto setRegion(String value) {
+            this.region = value;
+            return this;
+        }
     }
 
     @DataContract
@@ -168,27 +251,18 @@ public class dtos
         public CrashDto setLongitude(Double value) { this.longitude = value; return this; }
     }
 
-    public static class AutoveloxDto extends BaseEntity
+    public static class BaseEntity
     {
-        public Double latitude = null;
-        public Double longitude = null;
-        public Date date = null;
-        public String city = null;
-        public String state = null;
-        public String region = null;
-        
-        public Double getLatitude() { return latitude; }
-        public AutoveloxDto setLatitude(Double value) { this.latitude = value; return this; }
-        public Double getLongitude() { return longitude; }
-        public AutoveloxDto setLongitude(Double value) { this.longitude = value; return this; }
-        public Date getDate() { return date; }
-        public AutoveloxDto setDate(Date value) { this.date = value; return this; }
-        public String getCity() { return city; }
-        public AutoveloxDto setCity(String value) { this.city = value; return this; }
-        public String getState() { return state; }
-        public AutoveloxDto setState(String value) { this.state = value; return this; }
-        public String getRegion() { return region; }
-        public AutoveloxDto setRegion(String value) { this.region = value; return this; }
+        public Integer id = null;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public BaseEntity setId(Integer value) {
+            this.id = value;
+            return this;
+        }
     }
 
     public static class QueryDb<T> extends QueryBase
@@ -255,14 +329,6 @@ public class dtos
         public Autovelox setState(String value) { this.state = value; return this; }
         public String getRegion() { return region; }
         public Autovelox setRegion(String value) { this.region = value; return this; }
-    }
-
-    public static class BaseEntity
-    {
-        public Integer id = null;
-        
-        public Integer getId() { return id; }
-        public BaseEntity setId(Integer value) { this.id = value; return this; }
     }
 
     public static class QueryBase
