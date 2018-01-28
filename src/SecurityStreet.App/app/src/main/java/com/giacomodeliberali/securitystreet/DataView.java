@@ -9,6 +9,7 @@ import android.view.View;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -20,6 +21,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 
 public class DataView extends AppCompatActivity {
+
+    public static final String CURRENT_CRASH_ID = "CurrentCrashIdParamaterInActivityExtra";
 
     private String descriptionCity="Qui di seguito verranno riportati alcuni dati degli incidenti avvenuti nell'anno corrente nella provincia di ";
     private String descriptionUD1="Nella provincia di ";
@@ -50,6 +53,9 @@ public class DataView extends AppCompatActivity {
         setContentView(R.layout.activity_data_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        int currentCrashId = getIntent().getIntExtra(CURRENT_CRASH_ID,0);
+        Toast.makeText(this, "Current crash id = " + currentCrashId, Toast.LENGTH_SHORT).show();
 
         //non toccare
 

@@ -1,9 +1,6 @@
 package com.giacomodeliberali.securitystreet.tasks;
 
 import android.app.Activity;
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +10,11 @@ import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.servicestack.client.JsonServiceClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,10 +55,15 @@ public class LoadCrashesOnMap extends AsyncTask<Void, Void, List<dtos.CrashDto>>
         if (crashDtos != null) {
             for (dtos.CrashDto crash : crashDtos) {
                 if (crash.latitude != null && crash.longitude != null) {
+
+
                     MarkerOptions marker = new MarkerOptions()
                             .position(new LatLng(crash.latitude, crash.longitude));
 
-                    gMap.addMarker(marker);
+
+                    Marker m = gMap.addMarker(marker);
+                    m.setTag(crash.id);
+
                 }
             }
         }

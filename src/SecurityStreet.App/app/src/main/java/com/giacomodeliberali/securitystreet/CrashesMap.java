@@ -118,7 +118,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity(), DataView.class);
-                //intent.putExtra(EXTRA_MESSAGE, message);
+                intent.putExtra(DataView.CURRENT_CRASH_ID, (int) marker.getTag());
                 startActivity(intent);
 
                 return false;
