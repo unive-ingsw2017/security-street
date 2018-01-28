@@ -12,7 +12,7 @@
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/crashes_map"
+            android:id="@+id/send_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -28,7 +28,7 @@
 
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fragment_crashes_map_floating_button_here"
+                android:id="@+id/fragment_send_map_floating_button_here"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_gps_fixed"
@@ -38,7 +38,7 @@
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/crashes_progress_spinner"
+            android:id="@+id/send_progress_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -46,6 +46,23 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/send_cross"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_add_circle" />
+
+        <Button
+            android:id="@+id/send_position"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
+            android:text="Segnala posizione" />
 
 
     </RelativeLayout>

@@ -60,6 +60,7 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * Called when the user select a item in the drawer
+     *
      * @param item The selected item
      * @return true
      */
@@ -73,7 +74,7 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.autovelox_map_menuitem) {
             replaceFragment(new AutoveloxMap());
         } else if (id == R.id.send_menuitem) {
-
+            replaceFragment(new SendMap());
         } else if (id == R.id.notity_menuitem) {
 
         }
@@ -86,6 +87,7 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * Replaces the main_container fragment with the fragmanet speficied as parameter
+     *
      * @param fragment The new fragment to replace
      */
     public void replaceFragment(Fragment fragment) {
