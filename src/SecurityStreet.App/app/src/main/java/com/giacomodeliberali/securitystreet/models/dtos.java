@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-27 14:20:17
+Date: 2018-01-28 15:40:06
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://unive-development-swe-2018.azurewebsites.net
@@ -20,11 +20,17 @@ GlobalNamespace: dtos
 
 package com.giacomodeliberali.securitystreet.models;
 
-import java.math.*;
-import java.util.*;
-import net.servicestack.client.*;
-import com.google.gson.annotations.*;
-import com.google.gson.reflect.*;
+import com.google.gson.reflect.TypeToken;
+
+import net.servicestack.client.DataContract;
+import net.servicestack.client.DataMember;
+import net.servicestack.client.IReturn;
+import net.servicestack.client.ResponseStatus;
+import net.servicestack.client.Route;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class dtos
 {
@@ -127,12 +133,13 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
-        public Integer dead = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
         public Integer females = null;
         public Integer mortalityIndex = null;
+        public Double latitude = null;
+        public Double longitude = null;
         
         public String getRegion() { return region; }
         public CrashDto setRegion(String value) { this.region = value; return this; }
@@ -142,8 +149,6 @@ public class dtos
         public CrashDto setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public CrashDto setCrashes(Integer value) { this.crashes = value; return this; }
-        public Integer getDead() { return dead; }
-        public CrashDto setDead(Integer value) { this.dead = value; return this; }
         public Integer getInjuried() { return injuried; }
         public CrashDto setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
@@ -154,6 +159,10 @@ public class dtos
         public CrashDto setFemales(Integer value) { this.females = value; return this; }
         public Integer getMortalityIndex() { return mortalityIndex; }
         public CrashDto setMortalityIndex(Integer value) { this.mortalityIndex = value; return this; }
+        public Double getLatitude() { return latitude; }
+        public CrashDto setLatitude(Double value) { this.latitude = value; return this; }
+        public Double getLongitude() { return longitude; }
+        public CrashDto setLongitude(Double value) { this.longitude = value; return this; }
     }
 
     public static class AutoveloxDto extends BaseEntity
@@ -190,12 +199,13 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
-        public Integer dead = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
         public Integer females = null;
         public Integer mortalityIndex = null;
+        public Double latitude = null;
+        public Double longitude = null;
         
         public String getRegion() { return region; }
         public Crash setRegion(String value) { this.region = value; return this; }
@@ -205,8 +215,6 @@ public class dtos
         public Crash setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public Crash setCrashes(Integer value) { this.crashes = value; return this; }
-        public Integer getDead() { return dead; }
-        public Crash setDead(Integer value) { this.dead = value; return this; }
         public Integer getInjuried() { return injuried; }
         public Crash setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
@@ -217,6 +225,10 @@ public class dtos
         public Crash setFemales(Integer value) { this.females = value; return this; }
         public Integer getMortalityIndex() { return mortalityIndex; }
         public Crash setMortalityIndex(Integer value) { this.mortalityIndex = value; return this; }
+        public Double getLatitude() { return latitude; }
+        public Crash setLatitude(Double value) { this.latitude = value; return this; }
+        public Double getLongitude() { return longitude; }
+        public Crash setLongitude(Double value) { this.longitude = value; return this; }
     }
 
     public static class Autovelox extends BaseEntityWithAutoIncrement

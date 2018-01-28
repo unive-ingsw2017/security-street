@@ -13,35 +13,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.giacomodeliberali.securitystreet.models.Defaults;
-import com.giacomodeliberali.securitystreet.models.dtos;
 import com.giacomodeliberali.securitystreet.tasks.LoadAutoveloxHeatmapOnMap;
 import com.giacomodeliberali.securitystreet.tasks.LoadAutoveloxOnMap;
-import com.giacomodeliberali.securitystreet.tasks.LoadNearAutovelox;
-import com.giacomodeliberali.securitystreet.tasks.ReadAutovelox;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 /**
@@ -259,9 +245,6 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
     }
 
     private void loadHeatMapAsync() {
-
-
-
         if (!isHeatMap) {
             try {
 

@@ -25,19 +25,75 @@ namespace SecurityStreet.Server.Models.Entities
         public string State { get; set; }
 
         /// <summary>
-        /// Gets or sets the date.
+        /// Gets or sets the total circulating.
         /// </summary>
         /// <value>
-        /// The date.
+        /// The total circulating.
         /// </value>
-        public DateTime Date { get; set; }
+        public int TotalCirculating { get; set; }
 
         /// <summary>
-        /// Gets or sets the type.
+        /// Gets or sets the crashes.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The crashes.
         /// </value>
-        public string Type { get; set; }
+        public int Crashes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the injuried.
+        /// </summary>
+        /// <value>
+        /// The injuried.
+        /// </value>
+        public int Injuried { get; set; }
+
+        /// <summary>
+        /// Gets or sets the deadly crashes.
+        /// </summary>
+        /// <value>
+        /// The deadly crashes.
+        /// </value>
+        public int DeadlyCrashes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the men.
+        /// </summary>
+        /// <value>
+        /// The men.
+        /// </value>
+        public int Men { get; set; }
+
+        /// <summary>
+        /// Gets or sets the females.
+        /// </summary>
+        /// <value>
+        /// The females.
+        /// </value>
+        public int Females { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index of the mortality.
+        /// </summary>
+        /// <value>
+        /// The index of the mortality.
+        /// </value>
+        public int MortalityIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets the latitude.
+        /// </summary>
+        /// <value>
+        /// The latitude.
+        /// </value>
+        public double Latitude { get; set; }
+
+        /// <summary>
+        /// Gets or sets the longitude.
+        /// </summary>
+        /// <value>
+        /// The longitude.
+        /// </value>
+        public double Longitude { get; set; }
     }
 }

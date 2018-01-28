@@ -5,7 +5,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.giacomodeliberali.securitystreet.R;
 import com.giacomodeliberali.securitystreet.models.Defaults;
@@ -76,7 +75,7 @@ public class LoadAutoveloxOnMap extends AsyncTask<Void, Void, List<dtos.Autovelo
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
+        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -107,6 +106,6 @@ public class LoadAutoveloxOnMap extends AsyncTask<Void, Void, List<dtos.Autovelo
             }
         }
 
-        context.findViewById(R.id.progress_spinner).setVisibility(View.INVISIBLE);
+        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

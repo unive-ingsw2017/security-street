@@ -1,7 +1,6 @@
 package com.giacomodeliberali.securitystreet.tasks;
 
 import android.app.Activity;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
@@ -52,7 +50,7 @@ public class LoadAutoveloxHeatmapOnMap extends AsyncTask<Void, Void, List<dtos.A
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
+        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -80,6 +78,6 @@ public class LoadAutoveloxHeatmapOnMap extends AsyncTask<Void, Void, List<dtos.A
             gMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
 
-        context.findViewById(R.id.progress_spinner).setVisibility(View.INVISIBLE);
+        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

@@ -44,6 +44,10 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
         replaceFragment(new AutoveloxMap());
     }
 
+
+    /**
+     * Closes the drawer
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -54,17 +58,11 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
+    /**
+     * Called when the user select a item in the drawer
+     * @param item The selected item
+     * @return true
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -82,9 +80,14 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
+    /**
+     * Replaces the main_container fragment with the fragmanet speficied as parameter
+     * @param fragment The new fragment to replace
+     */
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
