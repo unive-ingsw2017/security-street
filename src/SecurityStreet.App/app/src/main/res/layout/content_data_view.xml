@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.giacomodeliberali.securitystreet.DataView"
+    tools:showIn="@layout/activity_data_view">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNameCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prova 1"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/textViewDescriptionCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prova 2"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewMaleFemaleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nConfronto tra Uomini e Donne"
+            android:textSize="24sp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/idPieChart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <TextView
+            android:id="@+id/textViewMaleFemaleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nProva 3"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewMortalityTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nMortalità incidenti"
+            android:textSize="24sp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/idPieChart2"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"></com.github.mikephil.charting.charts.PieChart>
+
+        <TextView
+            android:id="@+id/textViewMortalityDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nProva 4"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/textViewDeathTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nConfronto tra Feriti e Morti"
+            android:textSize="24sp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/idPieChart3"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"></com.github.mikephil.charting.charts.PieChart>
+
+        <TextView
+            android:id="@+id/textViewDeathDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nProva 4"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewFinalEmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</ScrollView>
