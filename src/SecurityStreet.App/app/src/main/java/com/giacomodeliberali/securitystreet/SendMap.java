@@ -1,6 +1,8 @@
 package com.giacomodeliberali.securitystreet;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,15 +20,20 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.giacomodeliberali.securitystreet.models.Defaults;
+import com.giacomodeliberali.securitystreet.models.dtos;
+import com.giacomodeliberali.securitystreet.tasks.SendAutovelox;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Date;
 
 
 /**
@@ -108,9 +115,35 @@ public class SendMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
 
-                LatLng coordinates = new LatLng(googleMap.getCameraPosition().target.longitude, googleMap.getCameraPosition().target.latitude);
+                final LatLng coordinates = new LatLng(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
 
-                Toast.makeText(getActivity(), String.format("Segnala in posizione (%s,%s)", coordinates.latitude, coordinates.longitude), Toast.LENGTH_SHORT).show();
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Segnala autovelox");
+                alert.setMessage(String.format("Vuoi segnalare un autovelox in questa posizione (%s,%s)?", coordinates.longitude, coordinates.latitude));
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.setPositiveButton("Segnala", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        dtos.AutoveloxDto item = new dtos.AutoveloxDto();
+                        item.setDate(new Date());
+                        item.setLatitude(coordinates.latitude);
+                        item.setLongitude(coordinates.longitude);
+
+                        new SendAutovelox(getActivity(), item, gMap).execute();
+
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
             }
         });
 
@@ -118,6 +151,18 @@ public class SendMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 panToMyMpositionAsync();
+            }
+        });
+
+        gMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                CameraPosition cameraPosition = googleMap.getCameraPosition();
+                if (cameraPosition.zoom < Defaults.DEFAULT_ZOOM) {
+                    sendPositionButton.setVisibility(View.INVISIBLE);
+                } else {
+                    sendPositionButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
