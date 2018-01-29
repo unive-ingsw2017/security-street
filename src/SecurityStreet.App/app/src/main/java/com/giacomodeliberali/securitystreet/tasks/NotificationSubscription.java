@@ -55,13 +55,9 @@ public class NotificationSubscription extends AsyncTask<Void, Void, dtos.Notific
     @Override
     protected void onPostExecute(dtos.NotificationSubscriptionDto result) {
 
-        if(!emitNotify)
+        if (!emitNotify)
             return;
 
-        if (result != null) {
-            Toast.makeText(context, "Sottoscrizione effettuata", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Sottoscrizione non effettuata", Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(context, "Sottoscrizione effettuata", Toast.LENGTH_SHORT).show();
     }
 }

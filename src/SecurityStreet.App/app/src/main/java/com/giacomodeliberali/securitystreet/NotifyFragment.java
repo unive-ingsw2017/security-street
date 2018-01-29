@@ -133,9 +133,7 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         seekBar.setProgress(radius);
         seekBarValue.setText("" + radius);
 
-        final boolean hasSubscribed = mPreferences.getBoolean("NOTIFY_SUBSCRIPTION", false);
-
-        if (hasSubscribed) {
+        if (mPreferences.getBoolean("NOTIFY_SUBSCRIPTION", false)) {
             subscribe.setText("Disattiva");
             updateSubscriptionButton.setVisibility(View.VISIBLE);
         } else {
@@ -149,7 +147,10 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
 
                 String clientToken = FirebaseInstanceId.getInstance().getToken();
 
-                if (!hasSubscribed) {
+                if (!mPreferences.getBoolean("NOTIFY_SUBSCRIPTION", false)) {
+
+                    // Make a new subscription
+
                     dtos.NotificationSubscriptionDto request = new dtos.NotificationSubscriptionDto();
                     request.clientToken = clientToken;
                     request.radius = Integer.parseInt(seekBarValue.getText().toString());
@@ -159,31 +160,42 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
                     try {
                         dtos.NotificationSubscriptionDto response = new NotificationSubscription(request, getActivity(), true).execute().get();
 
-                        if (response != null) {
-                            subscribe.setText("Disattiva");
-                            updateSubscriptionButton.setVisibility(View.VISIBLE);
+                        subscribe.setText("Disattiva");
+                        updateSubscriptionButton.setVisibility(View.VISIBLE);
 
-                            SharedPreferences.Editor editor = mPreferences.edit();
-                            editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
-                            editor.putInt("NOTIFY_RADIUS", response.getRadius());
-                            editor.commit();
-                        } else {
-                            subscribe.setText("Attiva");
-                            updateSubscriptionButton.setVisibility(View.GONE);
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
+                        editor.putInt("NOTIFY_RADIUS", request.getRadius());
+                        editor.commit();
 
-                            SharedPreferences.Editor editor = mPreferences.edit();
-                            editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
-                            editor.putInt("NOTIFY_RADIUS", Defaults.DEFAULT_RADIUS);
-                            editor.commit();
-                        }
 
                     } catch (Exception e) {
                         // FK
                     }
                 } else {
+
+                    // Remove the subscription
+
                     dtos.UnsubscriptionRequest request = new dtos.UnsubscriptionRequest();
                     request.clientToken = clientToken;
-                    new NotificationUnsubscription(getActivity(), request).execute();
+
+                    try {
+                        Void response = new NotificationUnsubscription(getActivity(), request).execute().get();
+
+                        subscribe.setText("Attiva");
+                        updateSubscriptionButton.setVisibility(View.GONE);
+
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.putBoolean("NOTIFY_SUBSCRIPTION", false);
+                        editor.putInt("NOTIFY_RADIUS", Defaults.DEFAULT_RADIUS);
+                        editor.commit();
+
+                        seekBar.setProgress(Defaults.DEFAULT_RADIUS);
+                        seekBarValue.setText("" + Defaults.DEFAULT_RADIUS);
+
+                    } catch (Exception e) {
+                        // FK
+                    }
                 }
             }
         });
@@ -191,6 +203,9 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         updateSubscriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Update the subscription
+
                 String clientToken = FirebaseInstanceId.getInstance().getToken();
 
                 dtos.NotificationSubscriptionDto request = new dtos.NotificationSubscriptionDto();
@@ -206,7 +221,7 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
                     editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
                     editor.putInt("NOTIFY_RADIUS", response.getRadius());
                     editor.commit();
-                }catch (Exception e){
+                } catch (Exception e) {
                     // FK
                 }
             }
