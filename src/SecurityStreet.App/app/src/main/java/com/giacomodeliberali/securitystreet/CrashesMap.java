@@ -91,6 +91,14 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_crashes_map, container, false);
 
+
+        rootView.findViewById(R.id.fragment_crashes_map_floating_button_here).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                panToMyMpositionAsync();
+            }
+        });
+
         // Construct the detection client
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
 
