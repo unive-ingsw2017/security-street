@@ -1,5 +1,6 @@
 package com.giacomodeliberali.securitystreet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.giacomodeliberali.securitystreet.models.dtos;
 
 public class MapsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -77,6 +80,9 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new SendMap());
         } else if (id == R.id.notity_menuitem) {
             replaceFragment(new NotifyFragment());
+        }else if (id == R.id.credit_menuitem) {
+            Intent intent = new Intent(this, CreditActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

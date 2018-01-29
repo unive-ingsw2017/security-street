@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.giacomodeliberali.securitystreet.CreditActivity"
+    tools:showIn="@layout/activity_credit">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Security Street"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="L'applicazione ha lo scopo di valorizzare gli open data,dei dati accessibili da tutti offerti dall Pubblica Amministrazione, mostrandone uno dei possibili utilizzi."
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contenuti Applicazione"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="L'app offre questi contenuti accessibili dal menù dell'applicazione:\n- Mappa incidenti : una mappa dove verranno visualizzati dei marker che corrispondono ad ogni provincia italiana.Una volta cliccato su uno dei marker si aprirà una schermata dove verranno mostrati alcuni dati relativi agli incidenti che sono accaduti nell'anno corrente nella città selezionata.\n- Mappa autovelox : mappa dove è possibile visualizzare gli autovelox installati nel territorio italiano. Questa mappa offre due tipi di visualizzazione,una semplice mappa con i marker o una mappa di calore,mostrando la numerosità degli autovelox attraverso un'indicatore che varia dal Verde(valore basso) a Rosso (valore Alto).\n- Segnala : dove è possibile segnalare un nuovo autovelox attraverso l'uso della mappa.\n- Notifiche : attraverso la registrazione della posizione desiderata è possibile rimanere aggiornati su l'installazione di nuovi autovelox entro un raggio scelto.\n- Crediti : Visualizzazione di alcune informazioni dell'applicazione, dallo scopo della sua creazione,i contenuti offerti e i componenti del team di sviluppo."
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Componenti del Gruppo"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Il team di sviluppo dell'app è composta da:\n-Giacomo De Liberali\n- Luca Mion\n- Luca Fortin\n- Matteo Berton"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n" />
+    </LinearLayout>
+</ScrollView>

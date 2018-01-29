@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -21,7 +24,7 @@ public class DataView extends AppCompatActivity {
 
     private String descriptionCity="Qui di seguito verranno riportati alcuni dati degli incidenti avvenuti nell'anno corrente nella provincia di ";
     private String descriptionUD1="Nella provincia di ";
-    private String descriptionUD2=" secondo i dati si stima che su 100 persone ";
+    private String descriptionUD2=" secondo i dati si stima che su 100 persone coinvolte negli incidenti ";
     private String descriptionUD3=" sono uomini e ";
     private String descriptionUD4=" sono donne.";
     private String descriptionMI1="Nella provincia di ";
@@ -48,8 +51,17 @@ public class DataView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
-
         Intent i = getIntent();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                finish();
+            }
+        });
+
         crashDtos =(dtos.CrashDto) i.getSerializableExtra(CURRENT_CRASH_ID);;
 
         String name=crashDtos.getState();

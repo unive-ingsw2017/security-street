@@ -20,6 +20,10 @@
             android:id="@+id/notity_menuitem"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/navigation_drawer_notify" />
+        <item
+            android:id="@+id/credit_menuitem"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Crediti" />
     </group>
 
 </menu>

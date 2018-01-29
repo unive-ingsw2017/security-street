@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.giacomodeliberali.securitystreet.DataView">
+    tools:context="com.giacomodeliberali.securitystreet.CreditActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -36,6 +36,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_data_view" />
+    <include layout="@layout/content_credit" />
 
 </android.support.design.widget.CoordinatorLayout>
