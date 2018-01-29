@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.giacomodeliberali.securitystreet.tasks.LoadCrashesOnMap;
-import com.giacomodeliberali.securitystreet.tasks.LoadDataView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -76,6 +75,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
 
     private FloatingActionButton floatingButtonHere;
 
+    private LoadCrashesOnMap lcom;
 
     public CrashesMap() {
         // Required empty public constructor
@@ -114,16 +114,20 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
         updateLocationUI();
 
         panToMyMpositionAsync();
-        new LoadCrashesOnMap(getActivity(), gMap).execute();
+        lcom=new LoadCrashesOnMap(getActivity(), gMap);
+        lcom.execute();
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                /*Intent intent = new Intent(getActivity(), DataView.class);
-                intent.putExtra(DataView.CURRENT_CRASH_ID, (int) marker.getTag());
-                startActivity(intent);*/
-
-                new LoadDataView(getActivity(),"CurrentCrashIdParamaterInActivityExtra");
+                Intent intent = new Intent(getActivity(), DataView.class);
+                for (dtos.CrashDto crash : lcom.crashes) {
+                    if (crash.getId().equals((int) marker.getTag())) {
+                        intent.putExtra(DataView.CURRENT_CRASH_ID,crash);
+                        break;
+                    }
+                }
+                startActivity(intent);
                 return false;
             }
         });

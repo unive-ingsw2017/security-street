@@ -28,6 +28,7 @@ import net.servicestack.client.IReturn;
 import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.Route;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -183,7 +184,7 @@ public class dtos
         public ReadRequest setId(Integer value) { this.id = value; return this; }
     }
 
-    public static class CrashDto extends BaseEntity
+    public static class CrashDto extends BaseEntity implements Serializable
     {
         public String region = null;
         public String state = null;

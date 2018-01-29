@@ -26,6 +26,8 @@ public class LoadCrashesOnMap extends AsyncTask<Void, Void, List<dtos.CrashDto>>
     private Activity context;
     private GoogleMap gMap;
 
+    public List<dtos.CrashDto> crashes;
+
     public LoadCrashesOnMap(Activity context, GoogleMap gMap) {
         this.gMap = gMap;
         this.context = context;
@@ -36,8 +38,8 @@ public class LoadCrashesOnMap extends AsyncTask<Void, Void, List<dtos.CrashDto>>
     protected List<dtos.CrashDto> doInBackground(Void... params) {
         try {
             JsonServiceClient client = new JsonServiceClient(Defaults.DEFAULT_SERVICES_URL);
-
-            return client.get(new dtos.ReadCrashRequest());
+            crashes=client.get(new dtos.ReadCrashRequest());
+            return crashes;
 
         } catch (Exception exception) {
             Log.e("", "Cannot read crashes", exception);
