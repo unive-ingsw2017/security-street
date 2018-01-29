@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-28 18:31:27
+Date: 2018-01-29 09:37:12
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://unive-development-swe-2018.azurewebsites.net
@@ -74,7 +74,6 @@ public class dtos
             this.item = value;
             return this;
         }
-
         private static Object responseType = AutoveloxDto.class;
 
         public Object getResponseType() {
@@ -89,6 +88,46 @@ public class dtos
         
         private static Object responseType = new TypeToken<ArrayList<AutoveloxDto>>(){}.getType();
         public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/notifications")
+    public static class SubscriptionRequest implements IReturn<Boolean> {
+        public NotificationSubscriptionDto item = null;
+
+        public NotificationSubscriptionDto getItem() {
+            return item;
+        }
+
+        public SubscriptionRequest setItem(NotificationSubscriptionDto value) {
+            this.item = value;
+            return this;
+        }
+
+        private static Object responseType = Boolean.class;
+
+        public Object getResponseType() {
+            return responseType;
+        }
+    }
+
+    @Route("/notifications")
+    public static class UnsubscriptionRequest implements IReturn<Boolean> {
+        public String clientToken = null;
+
+        public String getClientToken() {
+            return clientToken;
+        }
+
+        public UnsubscriptionRequest setClientToken(String value) {
+            this.clientToken = value;
+            return this;
+        }
+
+        private static Object responseType = Boolean.class;
+
+        public Object getResponseType() {
+            return responseType;
+        }
     }
 
     @Route(Path="/query/crashes", Verbs="GET")
@@ -216,7 +255,6 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
-        public Integer deaths = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
@@ -233,8 +271,6 @@ public class dtos
         public CrashDto setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public CrashDto setCrashes(Integer value) { this.crashes = value; return this; }
-        public Integer getDeaths() { return deaths; }
-        public CrashDto setDeaths(Integer value) { this.deaths = value; return this; }
         public Integer getInjuried() { return injuried; }
         public CrashDto setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
@@ -265,6 +301,49 @@ public class dtos
         }
     }
 
+    public static class NotificationSubscriptionDto extends BaseEntity {
+        public Double latitude = null;
+        public Double longitude = null;
+        public String clientToken = null;
+        public Integer radius = null;
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public NotificationSubscriptionDto setLatitude(Double value) {
+            this.latitude = value;
+            return this;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public NotificationSubscriptionDto setLongitude(Double value) {
+            this.longitude = value;
+            return this;
+        }
+
+        public String getClientToken() {
+            return clientToken;
+        }
+
+        public NotificationSubscriptionDto setClientToken(String value) {
+            this.clientToken = value;
+            return this;
+        }
+
+        public Integer getRadius() {
+            return radius;
+        }
+
+        public NotificationSubscriptionDto setRadius(Integer value) {
+            this.radius = value;
+            return this;
+        }
+    }
+
     public static class QueryDb<T> extends QueryBase
     {
         
@@ -276,6 +355,7 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
+        public Integer dead = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
@@ -292,6 +372,15 @@ public class dtos
         public Crash setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public Crash setCrashes(Integer value) { this.crashes = value; return this; }
+
+        public Integer getDead() {
+            return dead;
+        }
+
+        public Crash setDead(Integer value) {
+            this.dead = value;
+            return this;
+        }
         public Integer getInjuried() { return injuried; }
         public Crash setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
