@@ -83,7 +83,7 @@ public class DataView extends AppCompatActivity {
                 String name=crashDtos.get(1).getState();
                 float[] yUD={crashDtos.get(1).getMen(),crashDtos.get(1).getFemales()};                //il primo è riferito agli uomini il secondo alle donne
                 float[] yMI={crashDtos.get(1).getCrashes(),crashDtos.get(1).getDeadlyCrashes()};      //incidenti - mortali
-                float[] yFM={crashDtos.get(1).getInjuried(),crashDtos.get(1).getDeaths()};            //feriti - morti
+                float[] yFM={crashDtos.get(1).getInjuried(),crashDtos.get(1).getDead()};            //feriti - morti
 
                 //Non toccare
 

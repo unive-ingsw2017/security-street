@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-29 09:37:12
+Date: 2018-01-29 09:42:01
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://unive-development-swe-2018.azurewebsites.net
@@ -62,23 +62,15 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
-    @Route(Path = "/autovelox", Verbs = "POST")
-    public static class UpdateAutoveloxRequest implements IReturn<AutoveloxDto> {
+    @Route(Path="/autovelox", Verbs="POST")
+    public static class UpdateAutoveloxRequest implements IReturn<AutoveloxDto>
+    {
         public AutoveloxDto item = null;
-
-        public AutoveloxDto getItem() {
-            return item;
-        }
-
-        public UpdateAutoveloxRequest setItem(AutoveloxDto value) {
-            this.item = value;
-            return this;
-        }
+        
+        public AutoveloxDto getItem() { return item; }
+        public UpdateAutoveloxRequest setItem(AutoveloxDto value) { this.item = value; return this; }
         private static Object responseType = AutoveloxDto.class;
-
-        public Object getResponseType() {
-            return responseType;
-        }
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/autovelox/{Id}", Verbs="GET")
@@ -91,43 +83,25 @@ public class dtos
     }
 
     @Route("/notifications")
-    public static class SubscriptionRequest implements IReturn<Boolean> {
+    public static class SubscriptionRequest implements IReturn<Boolean>
+    {
         public NotificationSubscriptionDto item = null;
-
-        public NotificationSubscriptionDto getItem() {
-            return item;
-        }
-
-        public SubscriptionRequest setItem(NotificationSubscriptionDto value) {
-            this.item = value;
-            return this;
-        }
-
+        
+        public NotificationSubscriptionDto getItem() { return item; }
+        public SubscriptionRequest setItem(NotificationSubscriptionDto value) { this.item = value; return this; }
         private static Object responseType = Boolean.class;
-
-        public Object getResponseType() {
-            return responseType;
-        }
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/notifications")
-    public static class UnsubscriptionRequest implements IReturn<Boolean> {
+    public static class UnsubscriptionRequest implements IReturn<Boolean>
+    {
         public String clientToken = null;
-
-        public String getClientToken() {
-            return clientToken;
-        }
-
-        public UnsubscriptionRequest setClientToken(String value) {
-            this.clientToken = value;
-            return this;
-        }
-
+        
+        public String getClientToken() { return clientToken; }
+        public UnsubscriptionRequest setClientToken(String value) { this.clientToken = value; return this; }
         private static Object responseType = Boolean.class;
-
-        public Object getResponseType() {
-            return responseType;
-        }
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/query/crashes", Verbs="GET")
@@ -148,67 +122,27 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
-    public static class AutoveloxDto extends BaseEntity {
+    public static class AutoveloxDto extends BaseEntity
+    {
         public Double latitude = null;
         public Double longitude = null;
         public Date date = null;
         public String city = null;
         public String state = null;
         public String region = null;
-
-        public Double getLatitude() {
-            return latitude;
-        }
-
-        public AutoveloxDto setLatitude(Double value) {
-            this.latitude = value;
-            return this;
-        }
-
-        public Double getLongitude() {
-            return longitude;
-        }
-
-        public AutoveloxDto setLongitude(Double value) {
-            this.longitude = value;
-            return this;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public AutoveloxDto setDate(Date value) {
-            this.date = value;
-            return this;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public AutoveloxDto setCity(String value) {
-            this.city = value;
-            return this;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public AutoveloxDto setState(String value) {
-            this.state = value;
-            return this;
-        }
-
-        public String getRegion() {
-            return region;
-        }
-
-        public AutoveloxDto setRegion(String value) {
-            this.region = value;
-            return this;
-        }
+        
+        public Double getLatitude() { return latitude; }
+        public AutoveloxDto setLatitude(Double value) { this.latitude = value; return this; }
+        public Double getLongitude() { return longitude; }
+        public AutoveloxDto setLongitude(Double value) { this.longitude = value; return this; }
+        public Date getDate() { return date; }
+        public AutoveloxDto setDate(Date value) { this.date = value; return this; }
+        public String getCity() { return city; }
+        public AutoveloxDto setCity(String value) { this.city = value; return this; }
+        public String getState() { return state; }
+        public AutoveloxDto setState(String value) { this.state = value; return this; }
+        public String getRegion() { return region; }
+        public AutoveloxDto setRegion(String value) { this.region = value; return this; }
     }
 
     @DataContract
@@ -255,6 +189,7 @@ public class dtos
         public String state = null;
         public Integer totalCirculating = null;
         public Integer crashes = null;
+        public Integer dead = null;
         public Integer injuried = null;
         public Integer deadlyCrashes = null;
         public Integer men = null;
@@ -271,6 +206,8 @@ public class dtos
         public CrashDto setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public CrashDto setCrashes(Integer value) { this.crashes = value; return this; }
+        public Integer getDead() { return dead; }
+        public CrashDto setDead(Integer value) { this.dead = value; return this; }
         public Integer getInjuried() { return injuried; }
         public CrashDto setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
@@ -290,58 +227,26 @@ public class dtos
     public static class BaseEntity
     {
         public Integer id = null;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public BaseEntity setId(Integer value) {
-            this.id = value;
-            return this;
-        }
+        
+        public Integer getId() { return id; }
+        public BaseEntity setId(Integer value) { this.id = value; return this; }
     }
 
-    public static class NotificationSubscriptionDto extends BaseEntity {
+    public static class NotificationSubscriptionDto extends BaseEntity
+    {
         public Double latitude = null;
         public Double longitude = null;
         public String clientToken = null;
         public Integer radius = null;
-
-        public Double getLatitude() {
-            return latitude;
-        }
-
-        public NotificationSubscriptionDto setLatitude(Double value) {
-            this.latitude = value;
-            return this;
-        }
-
-        public Double getLongitude() {
-            return longitude;
-        }
-
-        public NotificationSubscriptionDto setLongitude(Double value) {
-            this.longitude = value;
-            return this;
-        }
-
-        public String getClientToken() {
-            return clientToken;
-        }
-
-        public NotificationSubscriptionDto setClientToken(String value) {
-            this.clientToken = value;
-            return this;
-        }
-
-        public Integer getRadius() {
-            return radius;
-        }
-
-        public NotificationSubscriptionDto setRadius(Integer value) {
-            this.radius = value;
-            return this;
-        }
+        
+        public Double getLatitude() { return latitude; }
+        public NotificationSubscriptionDto setLatitude(Double value) { this.latitude = value; return this; }
+        public Double getLongitude() { return longitude; }
+        public NotificationSubscriptionDto setLongitude(Double value) { this.longitude = value; return this; }
+        public String getClientToken() { return clientToken; }
+        public NotificationSubscriptionDto setClientToken(String value) { this.clientToken = value; return this; }
+        public Integer getRadius() { return radius; }
+        public NotificationSubscriptionDto setRadius(Integer value) { this.radius = value; return this; }
     }
 
     public static class QueryDb<T> extends QueryBase
@@ -372,15 +277,8 @@ public class dtos
         public Crash setTotalCirculating(Integer value) { this.totalCirculating = value; return this; }
         public Integer getCrashes() { return crashes; }
         public Crash setCrashes(Integer value) { this.crashes = value; return this; }
-
-        public Integer getDead() {
-            return dead;
-        }
-
-        public Crash setDead(Integer value) {
-            this.dead = value;
-            return this;
-        }
+        public Integer getDead() { return dead; }
+        public Crash setDead(Integer value) { this.dead = value; return this; }
         public Integer getInjuried() { return injuried; }
         public Crash setInjuried(Integer value) { this.injuried = value; return this; }
         public Integer getDeadlyCrashes() { return deadlyCrashes; }
