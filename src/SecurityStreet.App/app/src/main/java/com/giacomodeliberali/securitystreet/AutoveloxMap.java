@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -143,6 +144,18 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.getUiSettings().setMapToolbarEnabled(false);
+
+        gMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                CameraPosition cameraPosition = gMap.getCameraPosition();
+                if (cameraPosition.zoom < 8) {
+                    floatingButtonRefresh.setVisibility(View.GONE);
+                } else {
+                    floatingButtonRefresh.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
