@@ -53,6 +53,7 @@ namespace SecurityStreet.Server
             {
                 db.CreateTableIfNotExists<Autovelox>();
                 db.CreateTableIfNotExists<Crash>();
+                db.CreateTableIfNotExists<NotificationSubscription>();
             }
         }
     }

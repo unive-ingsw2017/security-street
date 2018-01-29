@@ -41,6 +41,14 @@ namespace SecurityStreet.Server.Models.Entities
         public int Crashes { get; set; }
 
         /// <summary>
+        /// Gets or sets the dead.
+        /// </summary>
+        /// <value>
+        /// The dead.
+        /// </value>
+        public int Dead { get; set; }
+
+        /// <summary>
         /// Gets or sets the injuried.
         /// </summary>
         /// <value>

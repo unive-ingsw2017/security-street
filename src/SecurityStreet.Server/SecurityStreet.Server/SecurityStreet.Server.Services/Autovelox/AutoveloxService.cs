@@ -80,8 +80,21 @@ namespace SecurityStreet.Server.Services.Autovelox
                     if (item != null)
                         db.Save(item);
 
+
                     if (item.Id > 0)
-                        return item.ConvertTo<AutoveloxDto>();
+                    {
+                        var result = item.ConvertTo<AutoveloxDto>();
+
+                        var firstCoord = new GeoCoordinate(request.Item.Latitude, request.Item.Longitude);
+
+                        // Leggere tutte le subscription e vedere se una ricade nelle coordinate di questo autovelox
+                        var q = db.SelectLazy<Server.Models.Entities.NotificationSubscription>()
+                            .Where(a => new GeoCoordinate(a.Latitude, a.Longitude).GetDistanceTo(firstCoord) <= (a.Radius * 1000));
+
+                        // Send a notification TO FCM
+
+                        return result;
+                    }
 
                     return null;
 

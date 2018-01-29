@@ -28,8 +28,7 @@
         android:layout_gravity="left"
         android:text="@string/intro_descirption"
         android:textSize="18sp"
-        android:textAlignment="textStart"
-        tools:text="L\'app che ti permette di verificare di persiona la posizione autovelox nella tua zona e il numero di incidenti" />
+        tools:text="L\'app che ti permette di verificare di persona la posizione autovelox nella tua zona e il numero di incidenti" />
 
     <Button
         android:layout_width="wrap_content"

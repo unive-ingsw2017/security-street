@@ -67,9 +67,11 @@
     <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Base\BaseEntityWithAutoIncrement.cs" />
     <Compile Include="Dto\AutoveloxDto.cs" />
+    <Compile Include="Dto\NotificationSubscriptionDto.cs" />
     <Compile Include="Dto\CrashDto.cs" />
     <Compile Include="Entities\Autovelox.cs" />
     <Compile Include="Entities\Crash.cs" />
+    <Compile Include="Entities\NotificationSubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
