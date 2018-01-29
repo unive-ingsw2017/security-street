@@ -76,7 +76,7 @@ public class MapsActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.send_menuitem) {
             replaceFragment(new SendMap());
         } else if (id == R.id.notity_menuitem) {
-
+            replaceFragment(new NotifyFragment());
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SecurityStreet.Server.Services.Autovelox.Models
 {
     [Route("/notifications")]
-    public class SubscriptionRequest : IReturn<bool>
+    public class SubscriptionRequest : IReturn<NotificationSubscriptionDto>
     {
         /// <summary>
         /// Gets or sets the item.

@@ -6,7 +6,11 @@ using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web.Script.Serialization;
 
 namespace SecurityStreet.Server.Services.Autovelox
 {
@@ -45,9 +49,8 @@ namespace SecurityStreet.Server.Services.Autovelox
         /// or
         /// Request item cannot be null
         /// </exception>
-        public bool Any(SubscriptionRequest request)
+        public NotificationSubscriptionDto Any(SubscriptionRequest request)
         {
-
             if (request == null)
                 throw new ArgumentException("Request cannot be null");
 
@@ -58,11 +61,27 @@ namespace SecurityStreet.Server.Services.Autovelox
             {
                 try
                 {
-                    return db.Save(request.Item.ConvertTo<Server.Models.Entities.NotificationSubscription>());
+                    List<Server.Models.Entities.NotificationSubscription> existing = db.LoadSelect<Server.Models.Entities.NotificationSubscription>(n => n.ClientToken == request.Item.ClientToken);
+
+                    if (existing != null && existing.Count > 0)
+                    {
+                        var record = existing.FirstOrDefault();
+                        record.Radius = request.Item.Radius >= 0 ? request.Item.Radius : 10;
+                        record.Longitude = request.Item.Longitude;
+                        record.Latitude = request.Item.Latitude;
+
+                        db.Save(record);
+
+                        return db.LoadSingleById<Server.Models.Entities.NotificationSubscription>(record.Id).ConvertTo<NotificationSubscriptionDto>();
+                    }
+
+                    db.Save(request.Item.ConvertTo<Server.Models.Entities.NotificationSubscription>());
+
+                    return db.LoadSingleById<Server.Models.Entities.NotificationSubscription>(request.Item.Id).ConvertTo<NotificationSubscriptionDto>();
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    return null;
                 }
             }
         }

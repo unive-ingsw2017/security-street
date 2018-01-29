@@ -2,6 +2,9 @@ package com.giacomodeliberali.securitystreet.services;
 
 import android.util.Log;
 
+import com.giacomodeliberali.securitystreet.models.Defaults;
+import com.giacomodeliberali.securitystreet.models.dtos;
+import com.giacomodeliberali.securitystreet.tasks.NotificationSubscription;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -36,7 +39,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+
+        dtos.NotificationSubscriptionDto request = new dtos.NotificationSubscriptionDto();
+        request.setClientToken(token);
+        request.radius = Defaults.DEFAULT_RADIUS;
+
+        // Save the client token
+        new NotificationSubscription(request).execute();
     }
 
 }

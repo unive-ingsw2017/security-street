@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-29 09:42:01
+Date: 2018-01-29 14:00:27
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://unive-development-swe-2018.azurewebsites.net
@@ -28,7 +28,6 @@ import net.servicestack.client.IReturn;
 import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.Route;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,13 +83,13 @@ public class dtos
     }
 
     @Route("/notifications")
-    public static class SubscriptionRequest implements IReturn<Boolean>
+    public static class SubscriptionRequest implements IReturn<NotificationSubscriptionDto>
     {
         public NotificationSubscriptionDto item = null;
         
         public NotificationSubscriptionDto getItem() { return item; }
         public SubscriptionRequest setItem(NotificationSubscriptionDto value) { this.item = value; return this; }
-        private static Object responseType = Boolean.class;
+        private static Object responseType = NotificationSubscriptionDto.class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -146,6 +145,23 @@ public class dtos
         public AutoveloxDto setRegion(String value) { this.region = value; return this; }
     }
 
+    public static class NotificationSubscriptionDto extends BaseEntity
+    {
+        public Double latitude = null;
+        public Double longitude = null;
+        public String clientToken = null;
+        public Integer radius = null;
+        
+        public Double getLatitude() { return latitude; }
+        public NotificationSubscriptionDto setLatitude(Double value) { this.latitude = value; return this; }
+        public Double getLongitude() { return longitude; }
+        public NotificationSubscriptionDto setLongitude(Double value) { this.longitude = value; return this; }
+        public String getClientToken() { return clientToken; }
+        public NotificationSubscriptionDto setClientToken(String value) { this.clientToken = value; return this; }
+        public Integer getRadius() { return radius; }
+        public NotificationSubscriptionDto setRadius(Integer value) { this.radius = value; return this; }
+    }
+
     @DataContract
     public static class QueryResponse<T>
     {
@@ -184,7 +200,7 @@ public class dtos
         public ReadRequest setId(Integer value) { this.id = value; return this; }
     }
 
-    public static class CrashDto extends BaseEntity implements Serializable
+    public static class CrashDto extends BaseEntity
     {
         public String region = null;
         public String state = null;
@@ -231,23 +247,6 @@ public class dtos
         
         public Integer getId() { return id; }
         public BaseEntity setId(Integer value) { this.id = value; return this; }
-    }
-
-    public static class NotificationSubscriptionDto extends BaseEntity
-    {
-        public Double latitude = null;
-        public Double longitude = null;
-        public String clientToken = null;
-        public Integer radius = null;
-        
-        public Double getLatitude() { return latitude; }
-        public NotificationSubscriptionDto setLatitude(Double value) { this.latitude = value; return this; }
-        public Double getLongitude() { return longitude; }
-        public NotificationSubscriptionDto setLongitude(Double value) { this.longitude = value; return this; }
-        public String getClientToken() { return clientToken; }
-        public NotificationSubscriptionDto setClientToken(String value) { this.clientToken = value; return this; }
-        public Integer getRadius() { return radius; }
-        public NotificationSubscriptionDto setRadius(Integer value) { this.radius = value; return this; }
     }
 
     public static class QueryDb<T> extends QueryBase
