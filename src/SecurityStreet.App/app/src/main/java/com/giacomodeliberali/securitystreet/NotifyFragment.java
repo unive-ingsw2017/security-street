@@ -2,6 +2,7 @@ package com.giacomodeliberali.securitystreet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import com.giacomodeliberali.securitystreet.models.Defaults;
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.giacomodeliberali.securitystreet.tasks.LoadCrashesOnMap;
 import com.giacomodeliberali.securitystreet.tasks.NotificationSubscription;
+import com.giacomodeliberali.securitystreet.tasks.NotificationUnsubscription;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -74,8 +76,9 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
     private TextView latitudeTextView;
     private TextView longitudeTextView;
     private Button subscribe;
+    private Button updateSubscriptionButton;
 
-    private LoadCrashesOnMap lcom;
+    private SharedPreferences mPreferences;
 
     public NotifyFragment() {
         // Required empty public constructor
@@ -85,6 +88,8 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         getActivity().setTitle("Sottoscrizione autovelox");
 
@@ -97,6 +102,7 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         longitudeTextView = rootView.findViewById(R.id.notify_longitude);
         latitudeTextView = rootView.findViewById(R.id.notify_latitude);
         subscribe = rootView.findViewById(R.id.subscribe_button);
+        updateSubscriptionButton = rootView.findViewById(R.id.update_subscription_button);
 
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -123,10 +129,68 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        int radius = mPreferences.getInt("NOTIFY_RADIUS", Defaults.DEFAULT_RADIUS);
+        seekBar.setProgress(radius);
+        seekBarValue.setText("" + radius);
+
+        final boolean hasSubscribed = mPreferences.getBoolean("NOTIFY_SUBSCRIPTION", false);
+
+        if (hasSubscribed) {
+            subscribe.setText("Disattiva");
+            updateSubscriptionButton.setVisibility(View.VISIBLE);
+        } else {
+            subscribe.setText("Attiva");
+            updateSubscriptionButton.setVisibility(View.GONE);
+        }
+
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                String clientToken = FirebaseInstanceId.getInstance().getToken();
+
+                if (!hasSubscribed) {
+                    dtos.NotificationSubscriptionDto request = new dtos.NotificationSubscriptionDto();
+                    request.clientToken = clientToken;
+                    request.radius = Integer.parseInt(seekBarValue.getText().toString());
+                    request.latitude = mLastKnownLocation.getLatitude();
+                    request.longitude = mLastKnownLocation.getLongitude();
+
+                    try {
+                        dtos.NotificationSubscriptionDto response = new NotificationSubscription(request, getActivity(), true).execute().get();
+
+                        if (response != null) {
+                            subscribe.setText("Disattiva");
+                            updateSubscriptionButton.setVisibility(View.VISIBLE);
+
+                            SharedPreferences.Editor editor = mPreferences.edit();
+                            editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
+                            editor.putInt("NOTIFY_RADIUS", response.getRadius());
+                            editor.commit();
+                        } else {
+                            subscribe.setText("Attiva");
+                            updateSubscriptionButton.setVisibility(View.GONE);
+
+                            SharedPreferences.Editor editor = mPreferences.edit();
+                            editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
+                            editor.putInt("NOTIFY_RADIUS", Defaults.DEFAULT_RADIUS);
+                            editor.commit();
+                        }
+
+                    } catch (Exception e) {
+                        // FK
+                    }
+                } else {
+                    dtos.UnsubscriptionRequest request = new dtos.UnsubscriptionRequest();
+                    request.clientToken = clientToken;
+                    new NotificationUnsubscription(getActivity(), request).execute();
+                }
+            }
+        });
+
+        updateSubscriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 String clientToken = FirebaseInstanceId.getInstance().getToken();
 
                 dtos.NotificationSubscriptionDto request = new dtos.NotificationSubscriptionDto();
@@ -135,7 +199,16 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
                 request.latitude = mLastKnownLocation.getLatitude();
                 request.longitude = mLastKnownLocation.getLongitude();
 
-                new NotificationSubscription(request, getActivity(), true).execute();
+                try {
+                    dtos.NotificationSubscriptionDto response = new NotificationSubscription(request, getActivity(), true).execute().get();
+
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean("NOTIFY_SUBSCRIPTION", true);
+                    editor.putInt("NOTIFY_RADIUS", response.getRadius());
+                    editor.commit();
+                }catch (Exception e){
+                    // FK
+                }
             }
         });
 

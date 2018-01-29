@@ -114,7 +114,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
         updateLocationUI();
 
         panToMyMpositionAsync();
-        lcom=new LoadCrashesOnMap(getActivity(), gMap);
+        lcom = new LoadCrashesOnMap(getActivity(), gMap);
         lcom.execute();
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -123,7 +123,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
                 Intent intent = new Intent(getActivity(), DataView.class);
                 for (dtos.CrashDto crash : lcom.crashes) {
                     if (crash.getId().equals((int) marker.getTag())) {
-                        intent.putExtra(DataView.CURRENT_CRASH_ID,crash);
+                        intent.putExtra(DataView.CURRENT_CRASH_ID, crash);
                         break;
                     }
                 }
