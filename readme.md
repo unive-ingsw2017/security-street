@@ -15,6 +15,8 @@ La nostra applicazione ha la funzione di rappresentare e fornire i dati riguardo
 autovelox come mezzo di prevenzione, analizzando il numero di incidenti prima e dopo
 l’installazione. 
 
+L'ultima versione per Android è disponibile a [questo](https://github.com/unive-ingsw2017/security-street/raw/master/src/SecurityStreet.App/dist/app.apk) indirizzo.
+
 ### Back end
 
-Il back end dell'applicazione, realizzato con la licenza gratuita di [ServiceStack](https://servicestack.net) e pubbliato su [Microsoft Azure](https://azure.microsoft.com), è reperibile all'indirizzo [http://unive-development-swe-2018.azurewebsites.net](http://unive-development-swe-2018.azurewebsites.net).
+Il back end dell'applicazione, realizzato con la licenza gratuita di [ServiceStack](https://servicestack.net) e pubbliato su [Microsoft Azure](https://azure.microsoft.com), è reperibile [qui](http://unive-development-swe-2018.azurewebsites.net).
