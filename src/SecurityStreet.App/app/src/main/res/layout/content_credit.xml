@@ -11,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <TextView
             android:id="@+id/textView10"
@@ -24,7 +26,7 @@
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="L'applicazione ha lo scopo di valorizzare gli open data,dei dati accessibili da tutti offerti dall Pubblica Amministrazione, mostrandone uno dei possibili utilizzi."
+            android:text="L'applicazione ha lo scopo di valorizzare gli open data,dei dati accessibili da tutti offerti dalla Pubblica Amministrazione, mostrandone uno dei tanti possibili utilizzi."
             android:textSize="18sp" />
 
         <TextView
@@ -38,7 +40,7 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="L'app offre questi contenuti accessibili dal menù dell'applicazione:\n- Mappa incidenti : una mappa dove verranno visualizzati dei marker che corrispondono ad ogni provincia italiana.Una volta cliccato su uno dei marker si aprirà una schermata dove verranno mostrati alcuni dati relativi agli incidenti che sono accaduti nell'anno corrente nella città selezionata.\n- Mappa autovelox : mappa dove è possibile visualizzare gli autovelox installati nel territorio italiano. Questa mappa offre due tipi di visualizzazione,una semplice mappa con i marker o una mappa di calore,mostrando la numerosità degli autovelox attraverso un'indicatore che varia dal Verde(valore basso) a Rosso (valore Alto).\n- Segnala : dove è possibile segnalare un nuovo autovelox attraverso l'uso della mappa.\n- Notifiche : attraverso la registrazione della posizione desiderata è possibile rimanere aggiornati su l'installazione di nuovi autovelox entro un raggio scelto.\n- Crediti : Visualizzazione di alcune informazioni dell'applicazione, dallo scopo della sua creazione,i contenuti offerti e i componenti del team di sviluppo."
+            android:text="In questa sezione verranno elencati tutti i contenuti accessibili dal menù dell'applicazione:\n - Mappa Incidenti : mappa con dei marker che corrispondono ad ogni provincia italiana. Una volta cliccato su uno dei marker si aprirà una schermata dove verranno mostrati alcuni dati relativi agli incidenti che sono accaduti nell'anno corrente nella città selezionata.\n - Mappa Autovelox : mappa dove è possibile visualizzare tutti gli autovelox installati nel territorio italiano. Questa mappa offre due tipi di visualizzazione, una semplice mappa con i marker o una mappa di calore, mostrando la numerosità degli autovelox attraverso un'indicatore che varia dal Verde(valore Basso) a Rosso (valore Alto).\n - Segnala : dove è possibile segnalare un nuovo autovelox attraverso l'uso della mappa.\n - Notifiche : attraverso la registrazione della posizione desiderata è possibile rimanere aggiornati su l'installazione di nuovi autovelox entro un raggio scelto.\n- Crediti : Visualizzazione di alcune informazioni dell'applicazione, dallo scopo della sua creazione,i contenuti offerti e i componenti del team di sviluppo."
             android:textSize="18sp" />
 
         <TextView

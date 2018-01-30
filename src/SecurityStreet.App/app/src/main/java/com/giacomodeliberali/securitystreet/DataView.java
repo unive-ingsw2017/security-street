@@ -8,13 +8,17 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.giacomodeliberali.securitystreet.models.dtos;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 
@@ -46,6 +50,10 @@ public class DataView extends AppCompatActivity {
     TextView deathDescription;
 
     dtos.CrashDto crashDtos;
+    String name;
+    float[] yUD=new float[2];                   //il primo è riferito agli uomini il secondo alle donne
+    float[] yMI=new float[2];                   //incidenti - mortali
+    float[] yFM=new float[2];                   //feriti - morti
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +72,13 @@ public class DataView extends AppCompatActivity {
 
         crashDtos =(dtos.CrashDto) i.getSerializableExtra(CURRENT_CRASH_ID);;
 
-        String name=crashDtos.getState();
-        float[] yUD={crashDtos.getMen(),crashDtos.getFemales()};                //il primo è riferito agli uomini il secondo alle donne
-        float[] yMI={crashDtos.getCrashes(),crashDtos.getDeadlyCrashes()};      //incidenti - mortali
-        float[] yFM={crashDtos.getInjuried(),crashDtos.getDead()};            //feriti - morti
-
-        //Non toccare
+        name=crashDtos.getState();
+        yUD[0]=crashDtos.getMen();
+        yUD[1]=crashDtos.getFemales();
+        yMI[0]=crashDtos.getCrashes();
+        yMI[1]=crashDtos.getDeadlyCrashes();
+        yFM[0]=crashDtos.getInjuried();
+        yFM[1]=crashDtos.getDead();
 
         ArrayList<Integer> colorsUD=new ArrayList<>();
         ArrayList<Integer> colorsMI=new ArrayList<>();
@@ -121,6 +130,42 @@ public class DataView extends AppCompatActivity {
         addDataSet(pieChartFM,xFM,yFM,colorsFM);
         addDataSet(pieChartUD,xUD,yUD,colorsUD);
         addDataSet(pieChartMI,xMI,yMI,colorsMI);
+
+        pieChartUD.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(DataView.this,"Uomini : " + (int)yUD[0] + "\nDonne : " + (int)yUD[1],Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        pieChartMI.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(DataView.this,"Incidenti : " + (int)yMI[0] + "\nDonne : " + (int)yMI[1],Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        pieChartFM.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(DataView.this,"Feriti : " + (int)yFM[0] + "\nMorti : " + (int)yFM[1],Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
     }
 
     private void addDataSet(PieChart chart,String[] dataX,float[] dataY,ArrayList<Integer> colors){
