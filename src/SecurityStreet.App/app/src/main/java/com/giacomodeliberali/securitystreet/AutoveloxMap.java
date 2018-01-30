@@ -150,9 +150,11 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
             public void onCameraMove() {
                 CameraPosition cameraPosition = gMap.getCameraPosition();
                 if (cameraPosition.zoom < 8) {
-                    floatingButtonRefresh.setVisibility(View.GONE);
+                    floatingButtonRefresh.setEnabled(false);
+                    floatingButtonRefresh.setBackgroundTintList(getResources().getColorStateList(R.color.colorDisabled));
                 } else {
-                    floatingButtonRefresh.setVisibility(View.VISIBLE);
+                    floatingButtonRefresh.setEnabled(true);
+                    floatingButtonRefresh.setBackgroundTintList(getResources().getColorStateList(R.color.colorWhite));
                 }
             }
         });
@@ -184,6 +186,8 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                         if (location != null) {
                             mLastKnownLocation = location;
 
+                            gMap.setMyLocationEnabled(true);
+
                             // Set the map's camera position to the current location of the device.
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
@@ -194,6 +198,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
                         } else {
                             Toast.makeText(self, "Impossibile rilevare la posizione corrente", Toast.LENGTH_SHORT).show();
                             floatingButtonHere.setVisibility(View.INVISIBLE);
+                            gMap.setMyLocationEnabled(false);
                         }
                     }
                 });
@@ -245,10 +250,8 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
         }
         try {
             if (mLocationPermissionGranted) {
-                gMap.setMyLocationEnabled(true);
                 floatingButtonHere.setVisibility(View.VISIBLE);
             } else {
-                gMap.setMyLocationEnabled(false);
                 floatingButtonHere.setVisibility(View.GONE);
                 mLastKnownLocation = null;
                 getLocationPermission();
@@ -264,7 +267,7 @@ public class AutoveloxMap extends Fragment implements OnMapReadyCallback {
 
                 floatingButtonHeatMap.setImageResource(R.drawable.ic_clear);
 
-                new LoadAutoveloxHeatmapOnMap(getActivity(),gMap).execute();
+                new LoadAutoveloxHeatmapOnMap(getActivity(), gMap).execute();
 
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Impossibile creare la mappa", Toast.LENGTH_LONG).show();

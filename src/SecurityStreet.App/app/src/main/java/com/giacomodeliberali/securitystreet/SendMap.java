@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,10 +159,12 @@ public class SendMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCameraMove() {
                 CameraPosition cameraPosition = googleMap.getCameraPosition();
-                if (cameraPosition.zoom < Defaults.DEFAULT_ZOOM) {
-                    sendPositionButton.setVisibility(View.INVISIBLE);
+                if (cameraPosition.zoom < 15) {
+                    sendPositionButton.setEnabled(false);
+                    sendPositionButton.setBackgroundTintList(getResources().getColorStateList(R.color.colorDisabled));
                 } else {
-                    sendPositionButton.setVisibility(View.VISIBLE);
+                    sendPositionButton.setEnabled(true);
+                    sendPositionButton.setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
                 }
             }
         });
@@ -184,10 +187,12 @@ public class SendMap extends Fragment implements OnMapReadyCallback {
                         if (location != null) {
                             mLastKnownLocation = location;
 
+                            gMap.setMyLocationEnabled(true);
+
                             // Set the map's camera position to the current location of the device.
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), Defaults.DEFAULT_ZOOM));
+                                            mLastKnownLocation.getLongitude()), 16));
 
                             sendPorgressBar.setVisibility(View.INVISIBLE);
                             sendCross.setVisibility(View.VISIBLE);
@@ -196,6 +201,7 @@ public class SendMap extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(self, "Impossibile rilevare la psozione corrente", Toast.LENGTH_SHORT).show();
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defaults.DEFAULT_LOCATION, Defaults.DEFAULT_ZOOM));
                             floatingButtonHere.setVisibility(View.GONE);
+                            gMap.setMyLocationEnabled(false);
                         }
                     }
                 });

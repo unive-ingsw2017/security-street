@@ -157,6 +157,8 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
                         if (location != null) {
                             mLastKnownLocation = location;
 
+                            gMap.setMyLocationEnabled(true);
+
                             // Set the map's camera position to the current location of the device.
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
@@ -166,6 +168,7 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(self, "Impossibile rilevare la psozione corrente", Toast.LENGTH_SHORT).show();
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defaults.DEFAULT_LOCATION, Defaults.DEFAULT_ZOOM));
                             floatingButtonHere.setVisibility(View.GONE);
+                            gMap.setMyLocationEnabled(false);
                         }
                     }
                 });

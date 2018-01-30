@@ -22,8 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
 
@@ -32,6 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_gps_fixed"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
                 app:backgroundTint="@color/colorWhite" />
 
 
@@ -55,14 +55,16 @@
             android:visibility="invisible"
             android:src="@drawable/ic_add_circle" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/send_position"
             android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
-            android:text="Segnala posizione" />
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:text="Segnala autovelox" />
 
 
     </RelativeLayout>
