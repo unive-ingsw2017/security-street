@@ -9,6 +9,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-
 import com.giacomodeliberali.securitystreet.models.Defaults;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
 
 
-        getLocationPermission();
+        checkLocationPermission();
     }
 
     private void initialize() {
@@ -45,15 +46,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Define the criteria how to select the locatioin provider -> use default
         String provider = locationManager.getBestProvider(new Criteria(), false);
 
-        if (provider == null) {
+        if (provider == null || !checkIntenet() || !checkGps()) {
             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-            alert.setTitle("Geolocalizzazione non avvenuta");
-            alert.setMessage("Abbiamo bisogno di rilevare la tua posizione per offrirti un servizio di qualità. Accetta il rilevamento e accendi la connessione dati e/o il GPS.");
-            alert.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+            alert.setTitle(getString(R.string.main_activity_alert_title));
+            alert.setMessage(getString(R.string.main_activity_alert_body));
+            alert.setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //System.exit(1);
-                    getLocationPermission();
+                    checkLocationPermission();
                 }
             });
             alert.show();
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             try {
                 locationManager.requestLocationUpdates(provider, 400, 1, this);
             } catch (SecurityException e) {
-                Toast.makeText(this, "Impossibile rilevare la posizione corrente. Attivare la connessione e/o il GPS", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.main_activity_exception_toast), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      * device. The result of the permission request is handled by a callback,
      * onRequestPermissionsResult.
      */
-    private void getLocationPermission() {
+    private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -120,6 +121,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     Defaults.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
+    }
+
+    /**
+     * Retruns true if internet is available
+     */
+    private boolean checkIntenet() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
+
+    /**
+     * Retruns true if location service is available
+     */
+    private boolean checkGps() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
     }
 
     @Override
