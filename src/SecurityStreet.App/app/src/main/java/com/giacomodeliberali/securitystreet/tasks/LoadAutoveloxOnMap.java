@@ -68,44 +68,49 @@ public class LoadAutoveloxOnMap extends AsyncTask<Void, Void, List<dtos.Autovelo
         } catch (Exception exception) {
             results = null;
             Log.e("", "Cannot insert autovelox", exception);
-        }finally {
+        } finally {
             return results;
         }
     }
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
+        if (context.findViewById(R.id.autovelox_progress_spinner) != null)
+            context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(List<dtos.AutoveloxDto> autoveloxDtos) {
-        if (autoveloxDtos != null) {
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        try {
+            if (autoveloxDtos != null) {
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-            for (dtos.AutoveloxDto velox : autoveloxDtos) {
+                for (dtos.AutoveloxDto velox : autoveloxDtos) {
 
-                LatLng coordinates = new LatLng(velox.getLatitude(), velox.getLongitude());
+                    LatLng coordinates = new LatLng(velox.getLatitude(), velox.getLongitude());
 
-                if (coordinates.latitude > 0 && coordinates.longitude > 0) {
-                    // Valid position
+                    if (coordinates.latitude > 0 && coordinates.longitude > 0) {
+                        // Valid position
 
-                    MarkerOptions marker = new MarkerOptions()
-                            .position(coordinates);
+                        MarkerOptions marker = new MarkerOptions()
+                                .position(coordinates);
 
-                    gMap.addMarker(marker);
+                        gMap.addMarker(marker);
 
-                    builder.include(coordinates);
+                        builder.include(coordinates);
+                    }
+                }
+
+                if (panToBounds) {
+                    LatLngBounds bounds = builder.build();
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 10);
+                    gMap.animateCamera(cameraUpdate);
                 }
             }
 
-            if (panToBounds) {
-                LatLngBounds bounds = builder.build();
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 10);
-                gMap.animateCamera(cameraUpdate);
-            }
+            context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("LoadAutoveloxOnMap", "The async task was interruped");
         }
-
-        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

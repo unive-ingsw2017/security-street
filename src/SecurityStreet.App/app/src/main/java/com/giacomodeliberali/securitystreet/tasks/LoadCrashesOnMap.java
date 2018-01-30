@@ -38,7 +38,7 @@ public class LoadCrashesOnMap extends AsyncTask<Void, Void, List<dtos.CrashDto>>
     protected List<dtos.CrashDto> doInBackground(Void... params) {
         try {
             JsonServiceClient client = new JsonServiceClient(Defaults.DEFAULT_SERVICES_URL);
-            crashes=client.get(new dtos.ReadCrashRequest());
+            crashes = client.get(new dtos.ReadCrashRequest());
             return crashes;
 
         } catch (Exception exception) {
@@ -49,26 +49,31 @@ public class LoadCrashesOnMap extends AsyncTask<Void, Void, List<dtos.CrashDto>>
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.crashes_progress_spinner).setVisibility(View.VISIBLE);
+        if (context.findViewById(R.id.crashes_progress_spinner) != null)
+            context.findViewById(R.id.crashes_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(List<dtos.CrashDto> crashDtos) {
-        if (crashDtos != null) {
-            for (dtos.CrashDto crash : crashDtos) {
-                if (crash.latitude != null && crash.longitude != null) {
+        try {
+            if (crashDtos != null) {
+                for (dtos.CrashDto crash : crashDtos) {
+                    if (crash.latitude != null && crash.longitude != null) {
 
 
-                    MarkerOptions marker = new MarkerOptions()
-                            .position(new LatLng(crash.latitude, crash.longitude));
+                        MarkerOptions marker = new MarkerOptions()
+                                .position(new LatLng(crash.latitude, crash.longitude));
 
 
-                    Marker m = gMap.addMarker(marker);
-                    m.setTag(crash.id);
+                        Marker m = gMap.addMarker(marker);
+                        m.setTag(crash.id);
 
+                    }
                 }
             }
+            context.findViewById(R.id.crashes_progress_spinner).setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("LoadCrashesOnMap", "The async task was interruped");
         }
-        context.findViewById(R.id.crashes_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

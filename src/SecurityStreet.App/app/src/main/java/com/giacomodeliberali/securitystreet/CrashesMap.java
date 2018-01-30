@@ -172,6 +172,8 @@ public class CrashesMap extends Fragment implements OnMapReadyCallback {
             }
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
+        }catch (Exception e){
+            Log.e("Exception: %s", e.getMessage());
         }
     }
 

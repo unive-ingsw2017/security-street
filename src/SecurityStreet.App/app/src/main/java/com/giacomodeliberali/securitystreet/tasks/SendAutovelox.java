@@ -2,6 +2,7 @@ package com.giacomodeliberali.securitystreet.tasks;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,19 +47,24 @@ public class SendAutovelox extends AsyncTask<Void, Void, dtos.AutoveloxDto> {
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.send_progress_spinner).setVisibility(View.VISIBLE);
+        if (context.findViewById(R.id.send_progress_spinner) != null)
+            context.findViewById(R.id.send_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(dtos.AutoveloxDto item) {
-        if (item == null) {
-            Toast.makeText(context, "Non è stato possibile segnalare l'autovelox", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, String.format("Segnalato in posizione (%s,%s)", item.latitude, item.longitude), Toast.LENGTH_SHORT).show();
+        try {
+            if (item == null) {
+                Toast.makeText(context, "Non è stato possibile segnalare l'autovelox", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, String.format("Segnalato in posizione (%s,%s)", item.latitude, item.longitude), Toast.LENGTH_SHORT).show();
 
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(item.latitude, item.longitude)));
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(item.latitude, item.longitude)));
+            }
+
+            context.findViewById(R.id.send_progress_spinner).setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("SendAutovelox", "The async task was interruped");
         }
-
-        context.findViewById(R.id.send_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

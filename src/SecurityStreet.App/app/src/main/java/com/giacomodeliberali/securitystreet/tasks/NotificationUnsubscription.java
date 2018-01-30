@@ -39,6 +39,7 @@ public class NotificationUnsubscription extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        Toast.makeText(context, "Sottoscrizione rimossa", Toast.LENGTH_SHORT).show();
+        if (context != null)
+            Toast.makeText(context, "Sottoscrizione rimossa", Toast.LENGTH_SHORT).show();
     }
 }

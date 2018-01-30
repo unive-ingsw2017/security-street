@@ -1,6 +1,8 @@
 package com.giacomodeliberali.securitystreet;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -8,6 +10,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,16 +37,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
 
 
+        getLocationPermission();
+    }
+
+    private void initialize() {
         // Get the location manager
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, false);
+        // Define the criteria how to select the locatioin provider -> use default
+        String provider = locationManager.getBestProvider(new Criteria(), false);
 
-        while (!getLocationPermission()) {
-            // Continue asking for permission, lol
+        if (provider == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+            alert.setTitle("Geolocalizzazione non avvenuta");
+            alert.setMessage("Abbiamo bisogno di rilevare la tua posizione per offrirti un servizio di qualità. Accetta il rilevamento e accendi la connessione dati e/o il GPS.");
+            alert.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //System.exit(1);
+                    getLocationPermission();
+                }
+            });
+            alert.show();
+            return;
         }
 
         Location location = null;
@@ -80,14 +97,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onProviderEnabled(String s) {
-        Toast.makeText(this, "Enabled new provider " + s,
-                Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Toast.makeText(this, "Disabled provider " + s,
-                Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -95,19 +110,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      * device. The result of the permission request is handled by a callback,
      * onRequestPermissionsResult.
      */
-    private boolean getLocationPermission() {
+    private void getLocationPermission() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
-            return true;
+            initialize();
 
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     Defaults.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-            return false;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == Defaults.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0)
+                initialize();
+        }
+
     }
 }

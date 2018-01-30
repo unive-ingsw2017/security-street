@@ -50,34 +50,39 @@ public class LoadAutoveloxHeatmapOnMap extends AsyncTask<Void, Void, List<dtos.A
 
     @Override
     protected void onPreExecute() {
-        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
+        if (context.findViewById(R.id.autovelox_progress_spinner) != null)
+            context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(List<dtos.AutoveloxDto> autoveloxDtos) {
-        if (autoveloxDtos != null) {
+        try {
+            if (autoveloxDtos != null) {
 
-            Collection<LatLng> data = new ArrayList<>();
-            for (dtos.AutoveloxDto velox : autoveloxDtos) {
-                data.add(new LatLng(velox.getLatitude(), velox.getLongitude()));
+                Collection<LatLng> data = new ArrayList<>();
+                for (dtos.AutoveloxDto velox : autoveloxDtos) {
+                    data.add(new LatLng(velox.getLatitude(), velox.getLongitude()));
+                }
+
+                HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder()
+                        .data(data)
+                        .build();
+
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(new LatLng(37.201953, 19.602473));
+                builder.include(new LatLng(46.372259, 6.610899));
+                LatLngBounds bounds = builder.build();
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+                gMap.animateCamera(cameraUpdate);
+
+                // Add a tile overlay to the map, using the heat map tile provider.
+                gMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
             }
 
-            HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder()
-                    .data(data)
-                    .build();
-
-
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(new LatLng(37.201953, 19.602473));
-            builder.include(new LatLng(46.372259, 6.610899));
-            LatLngBounds bounds = builder.build();
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-            gMap.animateCamera(cameraUpdate);
-
-            // Add a tile overlay to the map, using the heat map tile provider.
-            gMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+            context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("LoadAutoveloxHeatmap", "The async task was interruped");
         }
-
-        context.findViewById(R.id.autovelox_progress_spinner).setVisibility(View.INVISIBLE);
     }
 }

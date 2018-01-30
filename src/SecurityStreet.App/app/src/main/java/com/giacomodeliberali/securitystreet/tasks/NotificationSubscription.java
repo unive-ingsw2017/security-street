@@ -58,6 +58,7 @@ public class NotificationSubscription extends AsyncTask<Void, Void, dtos.Notific
         if (!emitNotify)
             return;
 
-        Toast.makeText(context, "Sottoscrizione effettuata", Toast.LENGTH_SHORT).show();
+        if (context != null)
+            Toast.makeText(context, "Sottoscrizione effettuata", Toast.LENGTH_SHORT).show();
     }
 }
