@@ -6,23 +6,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/crashes_map_menuitem"
-            android:icon="@drawable/ic_directions_car_black_24dp"
+            android:icon="@drawable/ic_directions_car"
             android:title="@string/navigation_drawer_crashes_map" />
         <item
             android:id="@+id/autovelox_map_menuitem"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_map"
             android:title="@string/navigation_drawer_autovelox_map" />
         <item
             android:id="@+id/send_menuitem"
-            android:icon="@drawable/ic_warning_black_24dp"
+            android:icon="@drawable/ic_warning"
             android:title="@string/navigation_drawer_send" />
         <item
             android:id="@+id/notity_menuitem"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_notifications"
             android:title="@string/navigation_drawer_notify" />
         <item
             android:id="@+id/credit_menuitem"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_people"
             android:title="Crediti" />
     </group>
 

@@ -25,6 +25,6 @@
     <string name="retry">Riprova</string>
 
     <string name="main_activity_alert_title">Servizi non attivi</string>
-    <string name="main_activity_alert_body">Abbiamo bisogno di rilevare la tua posizione per offrirti un servizio di qualità. Accetta il rilevamento e accendi la connessione dati e/o il GPS.</string>
+    <string name="main_activity_alert_body">Abbiamo bisogno di rilevare la tua posizione per offrirti un servizio di qualità. Accetta il rilevamento e accendi la connessione dati e il GPS.</string>
     <string name="main_activity_exception_toast">Impossibile rilevare la posizione corrente. Attivare la connessione e il GPS</string>
 </resources>
