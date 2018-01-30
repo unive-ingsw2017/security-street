@@ -33,6 +33,10 @@
             android:name=".DataView"
             android:label="@string/title_activity_data_view"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CreditActivity"
+            android:label="@string/title_activity_data_view"
+            android:theme="@style/AppTheme" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
